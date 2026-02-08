@@ -8,6 +8,7 @@ namespace EnemyLimbDamageManager.Core
     internal static class ELDMTelemetry
     {
         private const float HitLogIntervalSeconds = 0.25f;
+        private const float SummaryIntervalSeconds = 30f;
 
         private static readonly Dictionary<string, float> hitLogGate = new Dictionary<string, float>();
 
@@ -34,15 +35,14 @@ namespace EnemyLimbDamageManager.Core
             runId = Guid.NewGuid().ToString("N").Substring(0, 8);
             sessionStartTime = Time.unscaledTime;
             summaryCount = 0;
-            nextSummaryTime = sessionStartTime + GetSummaryIntervalSeconds();
+            nextSummaryTime = sessionStartTime + SummaryIntervalSeconds;
             ResetIntervalCounters();
             ResetTotalCounters();
 
             ELDMLog.Diag(
                 "diag evt=session_start run=" + runId +
                 " presetHash=" + ELDMModOptions.GetPresetSelectionHash() +
-                " sourceHash=" + ELDMModOptions.GetSourceOfTruthHash() +
-                " sessionDiagnostics=" + ELDMModOptions.SessionDiagnostics);
+                " sourceHash=" + ELDMModOptions.GetSourceOfTruthHash());
         }
 
         public static void Shutdown()
@@ -71,7 +71,7 @@ namespace EnemyLimbDamageManager.Core
             ResetTotalCounters();
             summaryCount = 0;
             sessionStartTime = Time.unscaledTime;
-            nextSummaryTime = sessionStartTime + GetSummaryIntervalSeconds();
+            nextSummaryTime = sessionStartTime + SummaryIntervalSeconds;
         }
 
         public static bool ShouldLogHit(int creatureId, string limbGroup, float now)
@@ -141,7 +141,7 @@ namespace EnemyLimbDamageManager.Core
             }
 
             EmitSummary(force: false);
-            nextSummaryTime = now + GetSummaryIntervalSeconds();
+            nextSummaryTime = now + SummaryIntervalSeconds;
         }
 
         private static void EmitSummary(bool force)
@@ -154,7 +154,7 @@ namespace EnemyLimbDamageManager.Core
             summaryCount++;
             ELDMLog.Diag(
                 "diag evt=summary run=" + runId +
-                " intervalSec=" + GetSummaryIntervalSeconds().ToString("F0") +
+                " intervalSec=" + SummaryIntervalSeconds.ToString("F0") +
                 " hits=" + intervalHits +
                 " disables=" + intervalDisables +
                 " recovers=" + intervalRecovers +
@@ -191,11 +191,6 @@ namespace EnemyLimbDamageManager.Core
             totalDisables = 0;
             totalRecovers = 0;
             peakTrackedCreatures = 0;
-        }
-
-        private static float GetSummaryIntervalSeconds()
-        {
-            return Mathf.Clamp(ELDMModOptions.SummaryIntervalSeconds, 1f, 60f);
         }
     }
 }

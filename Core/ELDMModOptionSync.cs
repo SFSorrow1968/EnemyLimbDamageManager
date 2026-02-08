@@ -162,7 +162,7 @@ namespace EnemyLimbDamageManager.Core
 
             string damagePreset = ELDMModOptions.NormalizeDamagePreset(ELDMModOptions.PresetDamageModel);
             string recoveryPreset = ELDMModOptions.NormalizeRecoveryPreset(ELDMModOptions.PresetRecoveryModel);
-            string responsePreset = ELDMModOptions.NormalizeResponsePreset(ELDMModOptions.PresetResponseModel);
+            string squirmPreset = ELDMModOptions.NormalizeSquirmPreset(ELDMModOptions.PresetSquirmModel);
 
             bool valuesChanged = ELDMModOptions.ApplySelectedPresets();
             bool uiChanged = SyncSourceOfTruthOptions();
@@ -173,7 +173,7 @@ namespace EnemyLimbDamageManager.Core
                 ELDMLog.Info(
                     "Preset batch wrote source-of-truth collapsibles: damage=" + damagePreset +
                     " recovery=" + recoveryPreset +
-                    " response=" + responsePreset +
+                    " squirm=" + squirmPreset +
                     " valuesChanged=" + valuesChanged +
                     " uiSynced=" + uiChanged +
                     " snapshot={" + ELDMModOptions.GetSourceOfTruthSummary() + "}",
@@ -187,31 +187,31 @@ namespace EnemyLimbDamageManager.Core
         {
             bool changed = false;
 
-            changed |= SyncFloatOption(ELDMModOptions.CategoryGlobal, ELDMModOptions.OptionGlobalDamageScale, ELDMModOptions.GlobalDamageScale);
-            changed |= SyncFloatOption(ELDMModOptions.CategoryGlobal, ELDMModOptions.OptionMinimumTrackedHitDamage, ELDMModOptions.MinimumTrackedHitDamage);
-            changed |= SyncBoolOption(ELDMModOptions.CategoryGlobal, ELDMModOptions.OptionHitsRefreshDisableTimer, ELDMModOptions.HitsRefreshDisableTimer);
-            changed |= SyncFloatOption(ELDMModOptions.CategoryGlobal, ELDMModOptions.OptionLegMoveMultiplierWhileDisabled, ELDMModOptions.LegMoveMultiplierWhileDisabled);
-            changed |= SyncBoolOption(ELDMModOptions.CategoryGlobal, ELDMModOptions.OptionLegDisableForcesFall, ELDMModOptions.LegDisableForcesFall);
-            changed |= SyncBoolOption(ELDMModOptions.CategoryGlobal, ELDMModOptions.OptionDisableLegPinForces, ELDMModOptions.DisableLegPinForces);
-            changed |= SyncBoolOption(ELDMModOptions.CategoryGlobal, ELDMModOptions.OptionDisableArmPinForces, ELDMModOptions.DisableArmPinForces);
-
             changed |= SyncFloatOption(ELDMModOptions.CategoryLeftLeg, ELDMModOptions.OptionLeftLegThreshold, ELDMModOptions.LeftLegThresholdDamage);
             changed |= SyncFloatOption(ELDMModOptions.CategoryLeftLeg, ELDMModOptions.OptionLeftLegDisableDuration, ELDMModOptions.LeftLegDisableDurationSeconds);
+            changed |= SyncFloatOption(ELDMModOptions.CategoryLeftLeg, ELDMModOptions.OptionLeftLegSquirmMultiplier, ELDMModOptions.LeftLegSquirmMultiplier);
 
             changed |= SyncFloatOption(ELDMModOptions.CategoryRightLeg, ELDMModOptions.OptionRightLegThreshold, ELDMModOptions.RightLegThresholdDamage);
             changed |= SyncFloatOption(ELDMModOptions.CategoryRightLeg, ELDMModOptions.OptionRightLegDisableDuration, ELDMModOptions.RightLegDisableDurationSeconds);
+            changed |= SyncFloatOption(ELDMModOptions.CategoryRightLeg, ELDMModOptions.OptionRightLegSquirmMultiplier, ELDMModOptions.RightLegSquirmMultiplier);
 
             changed |= SyncFloatOption(ELDMModOptions.CategoryLeftArm, ELDMModOptions.OptionLeftArmThreshold, ELDMModOptions.LeftArmThresholdDamage);
             changed |= SyncFloatOption(ELDMModOptions.CategoryLeftArm, ELDMModOptions.OptionLeftArmDisableDuration, ELDMModOptions.LeftArmDisableDurationSeconds);
+            changed |= SyncFloatOption(ELDMModOptions.CategoryLeftArm, ELDMModOptions.OptionLeftArmSquirmMultiplier, ELDMModOptions.LeftArmSquirmMultiplier);
 
             changed |= SyncFloatOption(ELDMModOptions.CategoryRightArm, ELDMModOptions.OptionRightArmThreshold, ELDMModOptions.RightArmThresholdDamage);
             changed |= SyncFloatOption(ELDMModOptions.CategoryRightArm, ELDMModOptions.OptionRightArmDisableDuration, ELDMModOptions.RightArmDisableDurationSeconds);
+            changed |= SyncFloatOption(ELDMModOptions.CategoryRightArm, ELDMModOptions.OptionRightArmSquirmMultiplier, ELDMModOptions.RightArmSquirmMultiplier);
 
-            changed |= SyncBoolOption(ELDMModOptions.CategoryLastStand, ELDMModOptions.OptionLastStandEnabled, ELDMModOptions.LastStandEnabled);
             changed |= SyncFloatOption(ELDMModOptions.CategoryLastStand, ELDMModOptions.OptionRecoveryDelayMultiplier, ELDMModOptions.RecoveryDelayMultiplier);
-            changed |= SyncBoolOption(ELDMModOptions.CategoryLastStand, ELDMModOptions.OptionRecoveryClearsAccumulatedDamage, ELDMModOptions.RecoveryClearsAccumulatedDamage);
             changed |= SyncFloatOption(ELDMModOptions.CategoryLastStand, ELDMModOptions.OptionRecoveryDamageRetainedPercent, ELDMModOptions.RecoveryDamageRetainedPercent);
-            changed |= SyncBoolOption(ELDMModOptions.CategoryLastStand, ELDMModOptions.OptionRecoveryRestoresPinForces, ELDMModOptions.RecoveryRestoresPinForces);
+
+            changed |= SyncBoolOption(ELDMModOptions.CategoryOptional, ELDMModOptions.OptionFallFromLegInjury, ELDMModOptions.FallFromLegInjury);
+            changed |= SyncBoolOption(ELDMModOptions.CategoryOptional, ELDMModOptions.OptionLegImmobilization, ELDMModOptions.LegImmobilization);
+            changed |= SyncBoolOption(ELDMModOptions.CategoryOptional, ELDMModOptions.OptionArmImmobilization, ELDMModOptions.ArmImmobilization);
+            changed |= SyncBoolOption(ELDMModOptions.CategoryOptional, ELDMModOptions.OptionLastStandEnabled, ELDMModOptions.LastStandEnabled);
+            changed |= SyncBoolOption(ELDMModOptions.CategoryOptional, ELDMModOptions.OptionRecoveryClearsAccumulatedDamage, ELDMModOptions.RecoveryClearsAccumulatedDamage);
+            changed |= SyncBoolOption(ELDMModOptions.CategoryOptional, ELDMModOptions.OptionRecoveryRestoresPinForces, ELDMModOptions.RecoveryRestoresPinForces);
 
             return changed;
         }

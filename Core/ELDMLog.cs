@@ -8,7 +8,7 @@ namespace EnemyLimbDamageManager.Core
         private const string Prefix = "[ELDM] ";
 
         public static bool DiagnosticsEnabled => ELDMModOptions.EnableDiagnosticsLogging || VerboseEnabled;
-        public static bool StructuredDiagnosticsEnabled => DiagnosticsEnabled || ELDMModOptions.SessionDiagnostics;
+        public static bool StructuredDiagnosticsEnabled => DiagnosticsEnabled;
         public static bool VerboseEnabled => ELDMModOptions.EnableVerboseLogging;
         public static bool BasicEnabled => ELDMModOptions.EnableBasicLogging || DiagnosticsEnabled;
 

@@ -125,8 +125,8 @@ namespace EnemyLimbDamageManager.Core
                 return;
             }
 
-            float trackedDamage = Mathf.Max(0f, collisionInstance.damageStruct.damage) * Mathf.Max(0f, ELDMModOptions.GlobalDamageScale);
-            if (trackedDamage < Mathf.Max(0f, ELDMModOptions.MinimumTrackedHitDamage))
+            float trackedDamage = Mathf.Max(0f, collisionInstance.damageStruct.damage);
+            if (trackedDamage < ELDMModOptions.GetMinimumTrackedHitDamage())
             {
                 return;
             }
@@ -138,7 +138,7 @@ namespace EnemyLimbDamageManager.Core
             LimbState limbState = state.Limbs[limbGroup];
             if (limbState.Disabled)
             {
-                if (ELDMModOptions.HitsRefreshDisableTimer)
+                if (ELDMModOptions.ShouldRefreshDisableTimerOnHit())
                 {
                     float duration = ELDMModOptions.GetLimbDisableDurationSeconds(GroupToRepresentativePart(limbGroup));
                     if (IsFinite(duration))
@@ -288,7 +288,7 @@ namespace EnemyLimbDamageManager.Core
             if (IsLegGroup(group))
             {
                 SetGroupPinsDisabled(state, group);
-                UpdateLegMobilityEffects(state, forceFall: ELDMModOptions.LegDisableForcesFall);
+                UpdateLegMobilityEffects(state, forceFall: ELDMModOptions.FallFromLegInjury);
             }
             else
             {
@@ -387,7 +387,7 @@ namespace EnemyLimbDamageManager.Core
             bool legDisabled = IsLimbDisabled(state, LimbGroup.LeftLeg) || IsLimbDisabled(state, LimbGroup.RightLeg);
             if (legDisabled)
             {
-                float moveMultiplier = Mathf.Clamp01(ELDMModOptions.LegMoveMultiplierWhileDisabled);
+                float moveMultiplier = GetLegSquirmMultiplier(state);
                 Locomotion locomotion = creature.currentLocomotion != null ? creature.currentLocomotion : creature.locomotion;
                 if (locomotion != null)
                 {
@@ -420,7 +420,7 @@ namespace EnemyLimbDamageManager.Core
 
         private void ApplyLegPinState(CreatureState state)
         {
-            if (!ELDMModOptions.DisableLegPinForces)
+            if (!ELDMModOptions.LegImmobilization)
             {
                 return;
             }
@@ -451,7 +451,7 @@ namespace EnemyLimbDamageManager.Core
                 return;
             }
 
-            bool shouldDisablePins = IsLegGroup(group) ? ELDMModOptions.DisableLegPinForces : ELDMModOptions.DisableArmPinForces;
+            bool shouldDisablePins = IsLegGroup(group) ? ELDMModOptions.LegImmobilization : ELDMModOptions.ArmImmobilization;
             if (!shouldDisablePins)
             {
                 return;
@@ -464,7 +464,7 @@ namespace EnemyLimbDamageManager.Core
         {
             if (state?.Creature != null && state.Creature.ragdoll != null)
             {
-                bool hadPinned = IsLegGroup(group) ? ELDMModOptions.DisableLegPinForces : ELDMModOptions.DisableArmPinForces;
+                bool hadPinned = IsLegGroup(group) ? ELDMModOptions.LegImmobilization : ELDMModOptions.ArmImmobilization;
                 if (hadPinned)
                 {
                     state.Creature.ragdoll.ResetPinForce(true, false, GroupToPinMask(group));
@@ -748,6 +748,30 @@ namespace EnemyLimbDamageManager.Core
         private static bool IsFinite(float value)
         {
             return !float.IsNaN(value) && !float.IsInfinity(value) && value > 0f;
+        }
+
+        private static float GetLegSquirmMultiplier(CreatureState state)
+        {
+            bool leftDisabled = IsLimbDisabled(state, LimbGroup.LeftLeg);
+            bool rightDisabled = IsLimbDisabled(state, LimbGroup.RightLeg);
+            if (leftDisabled && rightDisabled)
+            {
+                float left = ELDMModOptions.GetLimbSquirmMultiplier(RagdollPart.Type.LeftLeg);
+                float right = ELDMModOptions.GetLimbSquirmMultiplier(RagdollPart.Type.RightLeg);
+                return Mathf.Clamp01((left + right) * 0.5f);
+            }
+
+            if (leftDisabled)
+            {
+                return ELDMModOptions.GetLimbSquirmMultiplier(RagdollPart.Type.LeftLeg);
+            }
+
+            if (rightDisabled)
+            {
+                return ELDMModOptions.GetLimbSquirmMultiplier(RagdollPart.Type.RightLeg);
+            }
+
+            return 1f;
         }
 
         private static string GroupName(LimbGroup group)

@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using ThunderRoad;
 using UnityEngine;
 
@@ -6,53 +6,51 @@ namespace EnemyLimbDamageManager.Configuration
 {
     public static class ELDMModOptions
     {
-        public const string VERSION = "0.1.0";
+        public const string VERSION = "0.2.0";
 
         public const string CategoryPresets = "Limb Damage Presets";
-        public const string CategoryGlobal = "Global";
         public const string CategoryLeftLeg = "Left Leg";
         public const string CategoryRightLeg = "Right Leg";
         public const string CategoryLeftArm = "Left Arm";
         public const string CategoryRightArm = "Right Arm";
         public const string CategoryLastStand = "Last Stand";
+        public const string CategoryOptional = "Optional";
         public const string CategoryDiagnostics = "Advanced";
 
         public const string OptionEnableMod = "Enable Mod";
         public const string OptionPresetDamageModel = "Damage Model Preset";
         public const string OptionPresetRecoveryModel = "Recovery Preset";
-        public const string OptionPresetResponseModel = "Part Response Preset";
+        public const string OptionPresetSquirmModel = "Squirm Preset";
 
-        public const string OptionGlobalDamageScale = "Global Damage Scale";
-        public const string OptionMinimumTrackedHitDamage = "Minimum Tracked Hit Damage";
-        public const string OptionHitsRefreshDisableTimer = "Hits Refresh Disable Timer";
-        public const string OptionLegMoveMultiplierWhileDisabled = "Leg Move Multiplier While Disabled";
-        public const string OptionLegDisableForcesFall = "Leg Disable Forces Fall";
-        public const string OptionDisableLegPinForces = "Disable Leg Pin Forces";
-        public const string OptionDisableArmPinForces = "Disable Arm Pin Forces";
+        public const string OptionLeftLegThreshold = "Left Leg Damage To Disable";
+        public const string OptionLeftLegDisableDuration = "Left Leg Disable Duration Seconds";
+        public const string OptionLeftLegSquirmMultiplier = "Left Leg Squirm Multiplier";
 
-        public const string OptionLeftLegThreshold = "Damage To Disable";
-        public const string OptionLeftLegDisableDuration = "Disable Duration Seconds";
+        public const string OptionRightLegThreshold = "Right Leg Damage To Disable";
+        public const string OptionRightLegDisableDuration = "Right Leg Disable Duration Seconds";
+        public const string OptionRightLegSquirmMultiplier = "Right Leg Squirm Multiplier";
 
-        public const string OptionRightLegThreshold = "Damage To Disable";
-        public const string OptionRightLegDisableDuration = "Disable Duration Seconds";
+        public const string OptionLeftArmThreshold = "Left Arm Damage To Disable";
+        public const string OptionLeftArmDisableDuration = "Left Arm Disable Duration Seconds";
+        public const string OptionLeftArmSquirmMultiplier = "Left Arm Squirm Multiplier";
 
-        public const string OptionLeftArmThreshold = "Damage To Disable";
-        public const string OptionLeftArmDisableDuration = "Disable Duration Seconds";
+        public const string OptionRightArmThreshold = "Right Arm Damage To Disable";
+        public const string OptionRightArmDisableDuration = "Right Arm Disable Duration Seconds";
+        public const string OptionRightArmSquirmMultiplier = "Right Arm Squirm Multiplier";
 
-        public const string OptionRightArmThreshold = "Damage To Disable";
-        public const string OptionRightArmDisableDuration = "Disable Duration Seconds";
-
-        public const string OptionLastStandEnabled = "Enable Last Stand";
         public const string OptionRecoveryDelayMultiplier = "Recovery Delay Multiplier";
-        public const string OptionRecoveryClearsAccumulatedDamage = "Recovery Clears Damage";
         public const string OptionRecoveryDamageRetainedPercent = "Damage Retained After Recovery";
+
+        public const string OptionFallFromLegInjury = "Fall From Leg Injury";
+        public const string OptionLegImmobilization = "Leg Immobilization";
+        public const string OptionArmImmobilization = "Arm Immobilization";
+        public const string OptionLastStandEnabled = "Enable Last Stand";
+        public const string OptionRecoveryClearsAccumulatedDamage = "Recovery Clears Damage";
         public const string OptionRecoveryRestoresPinForces = "Recovery Restores Pin Forces";
 
         public const string OptionEnableBasicLogging = "Basic Logs";
         public const string OptionEnableDiagnosticsLogging = "Diagnostics Logs";
         public const string OptionEnableVerboseLogging = "Verbose Logs";
-        public const string OptionSessionDiagnostics = "Session Diagnostics";
-        public const string OptionSummaryInterval = "Summary Interval";
         public const string OptionResetTracking = "Reset Tracking";
 
         public const string PresetDamageForgiving = "Forgiving";
@@ -67,43 +65,26 @@ namespace EnemyLimbDamageManager.Configuration
         public const string PresetRecoverySlow = "SlowRecovery";
         public const string PresetRecoveryComeback = "Comeback";
 
-        public const string PresetResponseConservative = "Conservative";
-        public const string PresetResponseStandard = "Standard";
-        public const string PresetResponseTotalShutdown = "TotalShutdown";
-        public const string PresetResponseRagdollHeavy = "RagdollHeavy";
+        public const string PresetSquirmLocked = "Locked";
+        public const string PresetSquirmTight = "Tight";
+        public const string PresetSquirmStandard = "Standard";
+        public const string PresetSquirmLoose = "Loose";
+        public const string PresetSquirmWild = "Wild";
+
+        private const float HardcodedMinimumTrackedHitDamage = 0.10f;
+        private const bool HardcodedHitsRefreshDisableTimer = true;
 
         [ModOption(name = OptionEnableMod, order = 0, defaultValueIndex = 1, tooltip = "Master switch for limb damage disable logic")]
         public static bool EnableMod = true;
 
-        [ModOption(name = OptionPresetDamageModel, category = CategoryPresets, categoryOrder = 0, order = 5, defaultValueIndex = 1, valueSourceName = nameof(DamagePresetProvider), tooltip = "Batch writes per-limb thresholds and disable durations")]
+        [ModOption(name = OptionPresetDamageModel, category = CategoryPresets, categoryOrder = 0, order = 5, defaultValueIndex = 1, valueSourceName = nameof(DamagePresetProvider), tooltip = "Batch writes per-limb damage and duration values")]
         public static string PresetDamageModel = PresetDamageDefaultPlus;
 
-        [ModOption(name = OptionPresetRecoveryModel, category = CategoryPresets, categoryOrder = 0, order = 10, defaultValueIndex = 1, valueSourceName = nameof(RecoveryPresetProvider), tooltip = "Batch writes last-stand recovery controls")]
+        [ModOption(name = OptionPresetRecoveryModel, category = CategoryPresets, categoryOrder = 0, order = 10, defaultValueIndex = 1, valueSourceName = nameof(RecoveryPresetProvider), tooltip = "Batch writes recovery behavior values")]
         public static string PresetRecoveryModel = PresetRecoveryDefault;
 
-        [ModOption(name = OptionPresetResponseModel, category = CategoryPresets, categoryOrder = 0, order = 15, defaultValueIndex = 1, valueSourceName = nameof(ResponsePresetProvider), tooltip = "Batch writes movement and ragdoll response behavior")]
-        public static string PresetResponseModel = PresetResponseStandard;
-
-        [ModOption(name = OptionGlobalDamageScale, category = CategoryGlobal, categoryOrder = 20, order = 0, defaultValueIndex = 5, valueSourceName = nameof(DamageScaleProvider), interactionType = (ModOption.InteractionType)2, tooltip = "Scales tracked incoming limb damage before threshold checks")]
-        public static float GlobalDamageScale = 1.00f;
-
-        [ModOption(name = OptionMinimumTrackedHitDamage, category = CategoryGlobal, categoryOrder = 20, order = 10, defaultValueIndex = 1, valueSourceName = nameof(MinimumDamageProvider), interactionType = (ModOption.InteractionType)2, tooltip = "Ignore tiny hits below this value to reduce noise")]
-        public static float MinimumTrackedHitDamage = 0.50f;
-
-        [ModOption(name = OptionHitsRefreshDisableTimer, category = CategoryGlobal, categoryOrder = 20, order = 20, defaultValueIndex = 1, tooltip = "When a disabled limb is hit again, refresh its disable timer")]
-        public static bool HitsRefreshDisableTimer = true;
-
-        [ModOption(name = OptionLegMoveMultiplierWhileDisabled, category = CategoryGlobal, categoryOrder = 20, order = 30, defaultValueIndex = 0, valueSourceName = nameof(MoveMultiplierProvider), interactionType = (ModOption.InteractionType)2, tooltip = "Applied to locomotion while at least one leg is disabled")]
-        public static float LegMoveMultiplierWhileDisabled = 0.00f;
-
-        [ModOption(name = OptionLegDisableForcesFall, category = CategoryGlobal, categoryOrder = 20, order = 40, defaultValueIndex = 1, tooltip = "Force a destabilize/fall when a leg disables")]
-        public static bool LegDisableForcesFall = true;
-
-        [ModOption(name = OptionDisableLegPinForces, category = CategoryGlobal, categoryOrder = 20, order = 50, defaultValueIndex = 1, tooltip = "Zero leg pin forces while legs are disabled")]
-        public static bool DisableLegPinForces = true;
-
-        [ModOption(name = OptionDisableArmPinForces, category = CategoryGlobal, categoryOrder = 20, order = 60, defaultValueIndex = 1, tooltip = "Zero arm pin forces while arms are disabled")]
-        public static bool DisableArmPinForces = true;
+        [ModOption(name = OptionPresetSquirmModel, category = CategoryPresets, categoryOrder = 0, order = 15, defaultValueIndex = 1, valueSourceName = nameof(SquirmPresetProvider), tooltip = "Batch writes all limb squirm multipliers")]
+        public static string PresetSquirmModel = PresetSquirmTight;
 
         [ModOption(name = OptionLeftLegThreshold, category = CategoryLeftLeg, categoryOrder = 100, order = 0, defaultValueIndex = 9, valueSourceName = nameof(ThresholdDamageProvider), interactionType = (ModOption.InteractionType)2)]
         public static float LeftLegThresholdDamage = 22f;
@@ -111,11 +92,17 @@ namespace EnemyLimbDamageManager.Configuration
         [ModOption(name = OptionLeftLegDisableDuration, category = CategoryLeftLeg, categoryOrder = 100, order = 10, defaultValueIndex = 6, valueSourceName = nameof(DisableDurationProvider), interactionType = (ModOption.InteractionType)2)]
         public static float LeftLegDisableDurationSeconds = 14f;
 
+        [ModOption(name = OptionLeftLegSquirmMultiplier, category = CategoryLeftLeg, categoryOrder = 100, order = 20, defaultValueIndex = 1, valueSourceName = nameof(SquirmMultiplierProvider), interactionType = (ModOption.InteractionType)2)]
+        public static float LeftLegSquirmMultiplier = 0.10f;
+
         [ModOption(name = OptionRightLegThreshold, category = CategoryRightLeg, categoryOrder = 110, order = 0, defaultValueIndex = 9, valueSourceName = nameof(ThresholdDamageProvider), interactionType = (ModOption.InteractionType)2)]
         public static float RightLegThresholdDamage = 22f;
 
         [ModOption(name = OptionRightLegDisableDuration, category = CategoryRightLeg, categoryOrder = 110, order = 10, defaultValueIndex = 6, valueSourceName = nameof(DisableDurationProvider), interactionType = (ModOption.InteractionType)2)]
         public static float RightLegDisableDurationSeconds = 14f;
+
+        [ModOption(name = OptionRightLegSquirmMultiplier, category = CategoryRightLeg, categoryOrder = 110, order = 20, defaultValueIndex = 1, valueSourceName = nameof(SquirmMultiplierProvider), interactionType = (ModOption.InteractionType)2)]
+        public static float RightLegSquirmMultiplier = 0.10f;
 
         [ModOption(name = OptionLeftArmThreshold, category = CategoryLeftArm, categoryOrder = 120, order = 0, defaultValueIndex = 11, valueSourceName = nameof(ThresholdDamageProvider), interactionType = (ModOption.InteractionType)2)]
         public static float LeftArmThresholdDamage = 26f;
@@ -123,25 +110,40 @@ namespace EnemyLimbDamageManager.Configuration
         [ModOption(name = OptionLeftArmDisableDuration, category = CategoryLeftArm, categoryOrder = 120, order = 10, defaultValueIndex = 4, valueSourceName = nameof(DisableDurationProvider), interactionType = (ModOption.InteractionType)2)]
         public static float LeftArmDisableDurationSeconds = 10f;
 
+        [ModOption(name = OptionLeftArmSquirmMultiplier, category = CategoryLeftArm, categoryOrder = 120, order = 20, defaultValueIndex = 1, valueSourceName = nameof(SquirmMultiplierProvider), interactionType = (ModOption.InteractionType)2)]
+        public static float LeftArmSquirmMultiplier = 0.10f;
+
         [ModOption(name = OptionRightArmThreshold, category = CategoryRightArm, categoryOrder = 130, order = 0, defaultValueIndex = 11, valueSourceName = nameof(ThresholdDamageProvider), interactionType = (ModOption.InteractionType)2)]
         public static float RightArmThresholdDamage = 26f;
 
         [ModOption(name = OptionRightArmDisableDuration, category = CategoryRightArm, categoryOrder = 130, order = 10, defaultValueIndex = 4, valueSourceName = nameof(DisableDurationProvider), interactionType = (ModOption.InteractionType)2)]
         public static float RightArmDisableDurationSeconds = 10f;
 
-        [ModOption(name = OptionLastStandEnabled, category = CategoryLastStand, categoryOrder = 160, order = 0, defaultValueIndex = 1, tooltip = "If enabled, disabled limbs recover after their timer expires")]
-        public static bool LastStandEnabled = true;
+        [ModOption(name = OptionRightArmSquirmMultiplier, category = CategoryRightArm, categoryOrder = 130, order = 20, defaultValueIndex = 1, valueSourceName = nameof(SquirmMultiplierProvider), interactionType = (ModOption.InteractionType)2)]
+        public static float RightArmSquirmMultiplier = 0.10f;
 
-        [ModOption(name = OptionRecoveryDelayMultiplier, category = CategoryLastStand, categoryOrder = 160, order = 10, defaultValueIndex = 3, valueSourceName = nameof(RecoveryDelayProvider), interactionType = (ModOption.InteractionType)2, tooltip = "Multiplies per-limb disable duration before recovery")]
+        [ModOption(name = OptionRecoveryDelayMultiplier, category = CategoryLastStand, categoryOrder = 160, order = 10, defaultValueIndex = 3, valueSourceName = nameof(RecoveryDelayProvider), interactionType = (ModOption.InteractionType)2)]
         public static float RecoveryDelayMultiplier = 1.00f;
 
-        [ModOption(name = OptionRecoveryClearsAccumulatedDamage, category = CategoryLastStand, categoryOrder = 160, order = 20, defaultValueIndex = 1, tooltip = "If enabled, recovered limbs reset accumulated damage to zero")]
-        public static bool RecoveryClearsAccumulatedDamage = true;
-
-        [ModOption(name = OptionRecoveryDamageRetainedPercent, category = CategoryLastStand, categoryOrder = 160, order = 30, defaultValueIndex = 5, valueSourceName = nameof(RecoveryRetainedDamageProvider), interactionType = (ModOption.InteractionType)2, tooltip = "Used only when Recovery Clears Damage is disabled")]
+        [ModOption(name = OptionRecoveryDamageRetainedPercent, category = CategoryLastStand, categoryOrder = 160, order = 30, defaultValueIndex = 5, valueSourceName = nameof(RecoveryRetainedDamageProvider), interactionType = (ModOption.InteractionType)2)]
         public static float RecoveryDamageRetainedPercent = 35f;
 
-        [ModOption(name = OptionRecoveryRestoresPinForces, category = CategoryLastStand, categoryOrder = 160, order = 40, defaultValueIndex = 1, tooltip = "If enabled, recovery restores pin forces and interaction handles")]
+        [ModOption(name = OptionFallFromLegInjury, category = CategoryOptional, categoryOrder = 180, order = 0, defaultValueIndex = 1)]
+        public static bool FallFromLegInjury = true;
+
+        [ModOption(name = OptionLegImmobilization, category = CategoryOptional, categoryOrder = 180, order = 5, defaultValueIndex = 1)]
+        public static bool LegImmobilization = true;
+
+        [ModOption(name = OptionArmImmobilization, category = CategoryOptional, categoryOrder = 180, order = 10, defaultValueIndex = 1)]
+        public static bool ArmImmobilization = true;
+
+        [ModOption(name = OptionLastStandEnabled, category = CategoryOptional, categoryOrder = 180, order = 15, defaultValueIndex = 1)]
+        public static bool LastStandEnabled = true;
+
+        [ModOption(name = OptionRecoveryClearsAccumulatedDamage, category = CategoryOptional, categoryOrder = 180, order = 20, defaultValueIndex = 1)]
+        public static bool RecoveryClearsAccumulatedDamage = true;
+
+        [ModOption(name = OptionRecoveryRestoresPinForces, category = CategoryOptional, categoryOrder = 180, order = 25, defaultValueIndex = 1)]
         public static bool RecoveryRestoresPinForces = true;
 
         [ModOption(name = OptionEnableBasicLogging, category = CategoryDiagnostics, categoryOrder = 200, order = 0, defaultValueIndex = 1, tooltip = "Enable high-level state logs")]
@@ -152,12 +154,6 @@ namespace EnemyLimbDamageManager.Configuration
 
         [ModOption(name = OptionEnableVerboseLogging, category = CategoryDiagnostics, categoryOrder = 200, order = 4, defaultValueIndex = 0, tooltip = "Enable high-volume per-hit logs")]
         public static bool EnableVerboseLogging = false;
-
-        [ModOption(name = OptionSessionDiagnostics, category = CategoryDiagnostics, categoryOrder = 200, order = 6, defaultValueIndex = 0, tooltip = "Emit structured periodic summaries")]
-        public static bool SessionDiagnostics = false;
-
-        [ModOption(name = OptionSummaryInterval, category = CategoryDiagnostics, categoryOrder = 200, order = 10, defaultValueIndex = 1, valueSourceName = nameof(SummaryIntervalProvider), interactionType = (ModOption.InteractionType)2, tooltip = "Structured summary cadence")]
-        public static float SummaryIntervalSeconds = 5f;
 
         [ModOption(name = OptionResetTracking, category = CategoryDiagnostics, categoryOrder = 200, order = 20, defaultValueIndex = 0, tooltip = "Clear all runtime creature/limb tracking")]
         [ModOptionDontSave]
@@ -187,64 +183,18 @@ namespace EnemyLimbDamageManager.Configuration
             };
         }
 
-        public static ModOptionString[] ResponsePresetProvider()
+        public static ModOptionString[] SquirmPresetProvider()
         {
             return new[]
             {
-                new ModOptionString("Conservative", PresetResponseConservative),
-                new ModOptionString("Standard", PresetResponseStandard),
-                new ModOptionString("Total Shutdown", PresetResponseTotalShutdown),
-                new ModOptionString("Ragdoll Heavy", PresetResponseRagdollHeavy),
+                new ModOptionString("Locked", PresetSquirmLocked),
+                new ModOptionString("Tight", PresetSquirmTight),
+                new ModOptionString("Standard", PresetSquirmStandard),
+                new ModOptionString("Loose", PresetSquirmLoose),
+                new ModOptionString("Wild", PresetSquirmWild),
             };
         }
 
-        public static ModOptionFloat[] DamageScaleProvider()
-        {
-            return new[]
-            {
-                new ModOptionFloat("0.50x", 0.50f),
-                new ModOptionFloat("0.65x", 0.65f),
-                new ModOptionFloat("0.75x", 0.75f),
-                new ModOptionFloat("0.85x", 0.85f),
-                new ModOptionFloat("0.95x", 0.95f),
-                new ModOptionFloat("1.00x", 1.00f),
-                new ModOptionFloat("1.10x", 1.10f),
-                new ModOptionFloat("1.25x", 1.25f),
-                new ModOptionFloat("1.40x", 1.40f),
-                new ModOptionFloat("1.60x", 1.60f),
-                new ModOptionFloat("1.80x", 1.80f),
-                new ModOptionFloat("2.00x", 2.00f),
-            };
-        }
-
-        public static ModOptionFloat[] MinimumDamageProvider()
-        {
-            return new[]
-            {
-                new ModOptionFloat("0.10", 0.10f),
-                new ModOptionFloat("0.50", 0.50f),
-                new ModOptionFloat("1.00", 1.00f),
-                new ModOptionFloat("2.00", 2.00f),
-                new ModOptionFloat("3.00", 3.00f),
-                new ModOptionFloat("5.00", 5.00f),
-            };
-        }
-
-        public static ModOptionFloat[] MoveMultiplierProvider()
-        {
-            return new[]
-            {
-                new ModOptionFloat("0.00", 0.00f),
-                new ModOptionFloat("0.05", 0.05f),
-                new ModOptionFloat("0.10", 0.10f),
-                new ModOptionFloat("0.15", 0.15f),
-                new ModOptionFloat("0.25", 0.25f),
-                new ModOptionFloat("0.35", 0.35f),
-                new ModOptionFloat("0.50", 0.50f),
-                new ModOptionFloat("0.65", 0.65f),
-                new ModOptionFloat("0.80", 0.80f),
-            };
-        }
         public static ModOptionFloat[] ThresholdDamageProvider()
         {
             return new[]
@@ -290,6 +240,21 @@ namespace EnemyLimbDamageManager.Configuration
             };
         }
 
+        public static ModOptionFloat[] SquirmMultiplierProvider()
+        {
+            return new[]
+            {
+                new ModOptionFloat("0.00", 0.00f),
+                new ModOptionFloat("0.10", 0.10f),
+                new ModOptionFloat("0.20", 0.20f),
+                new ModOptionFloat("0.30", 0.30f),
+                new ModOptionFloat("0.40", 0.40f),
+                new ModOptionFloat("0.50", 0.50f),
+                new ModOptionFloat("0.65", 0.65f),
+                new ModOptionFloat("0.80", 0.80f),
+            };
+        }
+
         public static ModOptionFloat[] RecoveryDelayProvider()
         {
             return new[]
@@ -324,28 +289,14 @@ namespace EnemyLimbDamageManager.Configuration
             };
         }
 
-        public static ModOptionFloat[] SummaryIntervalProvider()
-        {
-            return new[]
-            {
-                new ModOptionFloat("2s", 2f),
-                new ModOptionFloat("5s", 5f),
-                new ModOptionFloat("10s", 10f),
-                new ModOptionFloat("15s", 15f),
-                new ModOptionFloat("30s", 30f),
-            };
-        }
-
         public static bool ApplySelectedPresets()
         {
             string damagePreset = NormalizeDamagePreset(PresetDamageModel);
             string recoveryPreset = NormalizeRecoveryPreset(PresetRecoveryModel);
-            string responsePreset = NormalizeResponsePreset(PresetResponseModel);
+            string squirmPreset = NormalizeSquirmPreset(PresetSquirmModel);
 
             ResolveDamagePreset(
                 damagePreset,
-                out float globalScale,
-                out float minHit,
                 out float leftLegThreshold,
                 out float rightLegThreshold,
                 out float leftArmThreshold,
@@ -363,17 +314,14 @@ namespace EnemyLimbDamageManager.Configuration
                 out float retainedDamage,
                 out bool restorePins);
 
-            ResolveResponsePreset(
-                responsePreset,
-                out float legMoveMultiplier,
-                out bool forceFall,
-                out bool disableLegPins,
-                out bool disableArmPins);
+            ResolveSquirmPreset(
+                squirmPreset,
+                out float leftLegSquirm,
+                out float rightLegSquirm,
+                out float leftArmSquirm,
+                out float rightArmSquirm);
 
             bool changed = false;
-            changed |= SetFloat(ref GlobalDamageScale, globalScale, 0.25f, 3f);
-            changed |= SetFloat(ref MinimumTrackedHitDamage, minHit, 0.1f, 10f);
-
             changed |= SetFloat(ref LeftLegThresholdDamage, leftLegThreshold, 1f, 200f);
             changed |= SetFloat(ref RightLegThresholdDamage, rightLegThreshold, 1f, 200f);
             changed |= SetFloat(ref LeftArmThresholdDamage, leftArmThreshold, 1f, 200f);
@@ -384,10 +332,10 @@ namespace EnemyLimbDamageManager.Configuration
             changed |= SetFloat(ref LeftArmDisableDurationSeconds, leftArmDuration, 1f, 600f);
             changed |= SetFloat(ref RightArmDisableDurationSeconds, rightArmDuration, 1f, 600f);
 
-            changed |= SetFloat(ref LegMoveMultiplierWhileDisabled, legMoveMultiplier, 0f, 1f);
-            changed |= SetBool(ref LegDisableForcesFall, forceFall);
-            changed |= SetBool(ref DisableLegPinForces, disableLegPins);
-            changed |= SetBool(ref DisableArmPinForces, disableArmPins);
+            changed |= SetFloat(ref LeftLegSquirmMultiplier, leftLegSquirm, 0f, 1f);
+            changed |= SetFloat(ref RightLegSquirmMultiplier, rightLegSquirm, 0f, 1f);
+            changed |= SetFloat(ref LeftArmSquirmMultiplier, leftArmSquirm, 0f, 1f);
+            changed |= SetFloat(ref RightArmSquirmMultiplier, rightArmSquirm, 0f, 1f);
 
             changed |= SetBool(ref LastStandEnabled, lastStandEnabled);
             changed |= SetFloat(ref RecoveryDelayMultiplier, recoveryDelayMultiplier, 0.1f, 10f);
@@ -396,6 +344,16 @@ namespace EnemyLimbDamageManager.Configuration
             changed |= SetBool(ref RecoveryRestoresPinForces, restorePins);
 
             return changed;
+        }
+
+        public static float GetMinimumTrackedHitDamage()
+        {
+            return HardcodedMinimumTrackedHitDamage;
+        }
+
+        public static bool ShouldRefreshDisableTimerOnHit()
+        {
+            return HardcodedHitsRefreshDisableTimer;
         }
 
         public static float GetLimbThresholdDamage(RagdollPart.Type limbType)
@@ -453,6 +411,27 @@ namespace EnemyLimbDamageManager.Configuration
             return baseDuration * Mathf.Clamp(RecoveryDelayMultiplier, 0.1f, 10f);
         }
 
+        public static float GetLimbSquirmMultiplier(RagdollPart.Type limbType)
+        {
+            switch (limbType)
+            {
+                case RagdollPart.Type.LeftLeg:
+                case RagdollPart.Type.LeftFoot:
+                    return Mathf.Clamp01(LeftLegSquirmMultiplier);
+                case RagdollPart.Type.RightLeg:
+                case RagdollPart.Type.RightFoot:
+                    return Mathf.Clamp01(RightLegSquirmMultiplier);
+                case RagdollPart.Type.LeftArm:
+                case RagdollPart.Type.LeftHand:
+                    return Mathf.Clamp01(LeftArmSquirmMultiplier);
+                case RagdollPart.Type.RightArm:
+                case RagdollPart.Type.RightHand:
+                    return Mathf.Clamp01(RightArmSquirmMultiplier);
+                default:
+                    return 0f;
+            }
+        }
+
         public static float GetRetainedDamageRatioAfterRecovery()
         {
             if (RecoveryClearsAccumulatedDamage)
@@ -468,21 +447,13 @@ namespace EnemyLimbDamageManager.Configuration
             int hash = 17;
             hash = CombineHash(hash, StringHash(NormalizeDamagePreset(PresetDamageModel)));
             hash = CombineHash(hash, StringHash(NormalizeRecoveryPreset(PresetRecoveryModel)));
-            hash = CombineHash(hash, StringHash(NormalizeResponsePreset(PresetResponseModel)));
+            hash = CombineHash(hash, StringHash(NormalizeSquirmPreset(PresetSquirmModel)));
             return hash;
         }
 
         public static int GetSourceOfTruthHash()
         {
             int hash = 17;
-            hash = CombineHash(hash, PercentHash(GlobalDamageScale));
-            hash = CombineHash(hash, PercentHash(MinimumTrackedHitDamage));
-            hash = CombineHash(hash, HitsRefreshDisableTimer ? 1 : 0);
-            hash = CombineHash(hash, PercentHash(LegMoveMultiplierWhileDisabled));
-            hash = CombineHash(hash, LegDisableForcesFall ? 1 : 0);
-            hash = CombineHash(hash, DisableLegPinForces ? 1 : 0);
-            hash = CombineHash(hash, DisableArmPinForces ? 1 : 0);
-
             hash = CombineHash(hash, PercentHash(LeftLegThresholdDamage));
             hash = CombineHash(hash, PercentHash(RightLegThresholdDamage));
             hash = CombineHash(hash, PercentHash(LeftArmThresholdDamage));
@@ -493,22 +464,28 @@ namespace EnemyLimbDamageManager.Configuration
             hash = CombineHash(hash, PercentHash(LeftArmDisableDurationSeconds));
             hash = CombineHash(hash, PercentHash(RightArmDisableDurationSeconds));
 
+            hash = CombineHash(hash, PercentHash(LeftLegSquirmMultiplier));
+            hash = CombineHash(hash, PercentHash(RightLegSquirmMultiplier));
+            hash = CombineHash(hash, PercentHash(LeftArmSquirmMultiplier));
+            hash = CombineHash(hash, PercentHash(RightArmSquirmMultiplier));
+
+            hash = CombineHash(hash, FallFromLegInjury ? 1 : 0);
+            hash = CombineHash(hash, LegImmobilization ? 1 : 0);
+            hash = CombineHash(hash, ArmImmobilization ? 1 : 0);
             hash = CombineHash(hash, LastStandEnabled ? 1 : 0);
-            hash = CombineHash(hash, PercentHash(RecoveryDelayMultiplier));
             hash = CombineHash(hash, RecoveryClearsAccumulatedDamage ? 1 : 0);
-            hash = CombineHash(hash, PercentHash(RecoveryDamageRetainedPercent));
             hash = CombineHash(hash, RecoveryRestoresPinForces ? 1 : 0);
+            hash = CombineHash(hash, PercentHash(RecoveryDelayMultiplier));
+            hash = CombineHash(hash, PercentHash(RecoveryDamageRetainedPercent));
             return hash;
         }
+
         public static string GetSourceOfTruthSummary()
         {
-            return "damageScale=" + GlobalDamageScale.ToString("0.00") +
-                   " minHit=" + MinimumTrackedHitDamage.ToString("0.00") +
-                   " LL=" + LeftLegThresholdDamage.ToString("0") + "/" + LeftLegDisableDurationSeconds.ToString("0") + "s" +
-                   " RL=" + RightLegThresholdDamage.ToString("0") + "/" + RightLegDisableDurationSeconds.ToString("0") + "s" +
-                   " LA=" + LeftArmThresholdDamage.ToString("0") + "/" + LeftArmDisableDurationSeconds.ToString("0") + "s" +
-                   " RA=" + RightArmThresholdDamage.ToString("0") + "/" + RightArmDisableDurationSeconds.ToString("0") + "s" +
-                   " moveWhileLegDisabled=" + LegMoveMultiplierWhileDisabled.ToString("0.00") +
+            return "LL=" + LeftLegThresholdDamage.ToString("0") + "/" + LeftLegDisableDurationSeconds.ToString("0") + "s@" + LeftLegSquirmMultiplier.ToString("0.00") +
+                   " RL=" + RightLegThresholdDamage.ToString("0") + "/" + RightLegDisableDurationSeconds.ToString("0") + "s@" + RightLegSquirmMultiplier.ToString("0.00") +
+                   " LA=" + LeftArmThresholdDamage.ToString("0") + "/" + LeftArmDisableDurationSeconds.ToString("0") + "s@" + LeftArmSquirmMultiplier.ToString("0.00") +
+                   " RA=" + RightArmThresholdDamage.ToString("0") + "/" + RightArmDisableDurationSeconds.ToString("0") + "s@" + RightArmSquirmMultiplier.ToString("0.00") +
                    " lastStand=" + LastStandEnabled +
                    " delay=" + RecoveryDelayMultiplier.ToString("0.00") + "x";
         }
@@ -533,19 +510,18 @@ namespace EnemyLimbDamageManager.Configuration
             return PresetRecoveryDefault;
         }
 
-        public static string NormalizeResponsePreset(string preset)
+        public static string NormalizeSquirmPreset(string preset)
         {
             string token = NormalizeToken(preset);
-            if (token.Contains("CONSERV")) return PresetResponseConservative;
-            if (token.Contains("TOTAL") || token.Contains("SHUTDOWN")) return PresetResponseTotalShutdown;
-            if (token.Contains("RAGDOLL") || token.Contains("HEAVY")) return PresetResponseRagdollHeavy;
-            return PresetResponseStandard;
+            if (token.Contains("LOCK")) return PresetSquirmLocked;
+            if (token.Contains("TIGHT")) return PresetSquirmTight;
+            if (token.Contains("LOOSE")) return PresetSquirmLoose;
+            if (token.Contains("WILD")) return PresetSquirmWild;
+            return PresetSquirmStandard;
         }
 
         private static void ResolveDamagePreset(
             string preset,
-            out float globalScale,
-            out float minHit,
             out float leftLegThreshold,
             out float rightLegThreshold,
             out float leftArmThreshold,
@@ -555,8 +531,6 @@ namespace EnemyLimbDamageManager.Configuration
             out float leftArmDuration,
             out float rightArmDuration)
         {
-            globalScale = 1.00f;
-            minHit = 0.50f;
             leftLegThreshold = 22f;
             rightLegThreshold = 22f;
             leftArmThreshold = 26f;
@@ -569,8 +543,6 @@ namespace EnemyLimbDamageManager.Configuration
             switch (preset)
             {
                 case PresetDamageForgiving:
-                    globalScale = 0.85f;
-                    minHit = 1.0f;
                     leftLegThreshold = 30f;
                     rightLegThreshold = 30f;
                     leftArmThreshold = 35f;
@@ -581,8 +553,6 @@ namespace EnemyLimbDamageManager.Configuration
                     rightArmDuration = 6f;
                     break;
                 case PresetDamageTactical:
-                    globalScale = 1.10f;
-                    minHit = 0.5f;
                     leftLegThreshold = 18f;
                     rightLegThreshold = 18f;
                     leftArmThreshold = 22f;
@@ -593,8 +563,6 @@ namespace EnemyLimbDamageManager.Configuration
                     rightArmDuration = 12f;
                     break;
                 case PresetDamageBrutal:
-                    globalScale = 1.35f;
-                    minHit = 0.25f;
                     leftLegThreshold = 14f;
                     rightLegThreshold = 14f;
                     leftArmThreshold = 16f;
@@ -605,8 +573,6 @@ namespace EnemyLimbDamageManager.Configuration
                     rightArmDuration = 20f;
                     break;
                 case PresetDamageSevered:
-                    globalScale = 1.60f;
-                    minHit = 0.10f;
                     leftLegThreshold = 10f;
                     rightLegThreshold = 10f;
                     leftArmThreshold = 12f;
@@ -637,68 +603,54 @@ namespace EnemyLimbDamageManager.Configuration
             {
                 case PresetRecoveryDisabled:
                     enabled = false;
-                    delayMultiplier = 1.0f;
                     clearsDamage = false;
                     retainedDamage = 100f;
                     restorePins = false;
                     break;
                 case PresetRecoveryQuick:
-                    enabled = true;
                     delayMultiplier = 0.60f;
-                    clearsDamage = true;
                     retainedDamage = 10f;
-                    restorePins = true;
                     break;
                 case PresetRecoverySlow:
-                    enabled = true;
                     delayMultiplier = 1.80f;
-                    clearsDamage = true;
                     retainedDamage = 20f;
-                    restorePins = true;
                     break;
                 case PresetRecoveryComeback:
-                    enabled = true;
                     delayMultiplier = 0.40f;
                     clearsDamage = false;
                     retainedDamage = 60f;
-                    restorePins = true;
                     break;
             }
         }
 
-        private static void ResolveResponsePreset(
+        private static void ResolveSquirmPreset(
             string preset,
-            out float legMoveMultiplier,
-            out bool forceFall,
-            out bool disableLegPins,
-            out bool disableArmPins)
+            out float leftLegSquirm,
+            out float rightLegSquirm,
+            out float leftArmSquirm,
+            out float rightArmSquirm)
         {
-            legMoveMultiplier = 0f;
-            forceFall = true;
-            disableLegPins = true;
-            disableArmPins = true;
-
+            float shared = 0.20f;
             switch (preset)
             {
-                case PresetResponseConservative:
-                    legMoveMultiplier = 0.25f;
-                    forceFall = false;
-                    disableLegPins = false;
-                    disableArmPins = false;
+                case PresetSquirmLocked:
+                    shared = 0.00f;
                     break;
-                case PresetResponseTotalShutdown:
-                    legMoveMultiplier = 0f;
-                    forceFall = true;
-                    disableLegPins = true;
-                    disableArmPins = true;
+                case PresetSquirmTight:
+                    shared = 0.10f;
                     break;
-                case PresetResponseRagdollHeavy:
-                    legMoveMultiplier = 0.05f;
-                    forceFall = true;
-                    disableLegPins = true;
-                    disableArmPins = true;
+                case PresetSquirmLoose:
+                    shared = 0.40f;
+                    break;
+                case PresetSquirmWild:
+                    shared = 0.65f;
                     break;
             }
+
+            leftLegSquirm = shared;
+            rightLegSquirm = shared;
+            leftArmSquirm = shared;
+            rightArmSquirm = shared;
         }
 
         private static bool SetBool(ref bool field, bool value)
