@@ -10,9 +10,10 @@ namespace EnemyLimbDamageManager.Tests
         public void SetUp()
         {
             ELDMModOptions.EnableMod = true;
-            ELDMModOptions.PresetDamageModel = ELDMModOptions.PresetDamageDefaultPlus;
-            ELDMModOptions.PresetRecoveryModel = ELDMModOptions.PresetRecoveryDefault;
-            ELDMModOptions.PresetSquirmModel = ELDMModOptions.PresetSquirmTight;
+            ELDMModOptions.PresetDamageModel = ELDMModOptions.PresetDamageDefault;
+            ELDMModOptions.PresetLimbSlowModel = ELDMModOptions.PresetLimbSlowDefault;
+            ELDMModOptions.PresetLastStandModel = ELDMModOptions.PresetLastStandDefault;
+            ELDMModOptions.PresetLastStandSlowModel = ELDMModOptions.PresetLastStandSlowDefault;
             ELDMModOptions.EnableBasicLogging = true;
             ELDMModOptions.EnableDiagnosticsLogging = false;
             ELDMModOptions.EnableVerboseLogging = false;
@@ -43,9 +44,10 @@ namespace EnemyLimbDamageManager.Tests
         public void PresetNormalization_MapsAliases()
         {
             Assert.That(ELDMModOptions.NormalizeDamagePreset("brutal"), Is.EqualTo(ELDMModOptions.PresetDamageBrutal));
-            Assert.That(ELDMModOptions.NormalizeDamagePreset("Extreme"), Is.EqualTo(ELDMModOptions.PresetDamageSevered));
-            Assert.That(ELDMModOptions.NormalizeRecoveryPreset("off"), Is.EqualTo(ELDMModOptions.PresetRecoveryDisabled));
-            Assert.That(ELDMModOptions.NormalizeSquirmPreset("wild"), Is.EqualTo(ELDMModOptions.PresetSquirmWild));
+            Assert.That(ELDMModOptions.NormalizeDamagePreset("Extreme"), Is.EqualTo(ELDMModOptions.PresetDamageExtreme));
+            Assert.That(ELDMModOptions.NormalizeLimbSlowPreset("high"), Is.EqualTo(ELDMModOptions.PresetLimbSlowHigh));
+            Assert.That(ELDMModOptions.NormalizeLastStandPreset("off"), Is.EqualTo("OffLegacy"));
+            Assert.That(ELDMModOptions.NormalizeLastStandSlowPreset("heavy"), Is.EqualTo(ELDMModOptions.PresetLastStandSlowHeavy));
         }
 
         [Test]
@@ -55,7 +57,7 @@ namespace EnemyLimbDamageManager.Tests
             try
             {
                 int before = ELDMModOptions.GetPresetSelectionHash();
-                ELDMModOptions.PresetDamageModel = ELDMModOptions.PresetDamageTactical;
+                ELDMModOptions.PresetDamageModel = ELDMModOptions.PresetDamageSevere;
                 int after = ELDMModOptions.GetPresetSelectionHash();
                 Assert.That(after, Is.Not.EqualTo(before));
             }
@@ -63,6 +65,15 @@ namespace EnemyLimbDamageManager.Tests
             {
                 ELDMModOptions.PresetDamageModel = previous;
             }
+        }
+
+        [Test]
+        public void DeadRecoveryChance_HalvesPerSuccessfulRecovery()
+        {
+            ELDMModOptions.DeadRevivalChancePercent = 100f;
+            Assert.That(ELDMModOptions.GetEffectiveDeadRecoveryChanceRatio(0), Is.EqualTo(1f).Within(0.0001f));
+            Assert.That(ELDMModOptions.GetEffectiveDeadRecoveryChanceRatio(1), Is.EqualTo(0.5f).Within(0.0001f));
+            Assert.That(ELDMModOptions.GetEffectiveDeadRecoveryChanceRatio(2), Is.EqualTo(0.25f).Within(0.0001f));
         }
     }
 }

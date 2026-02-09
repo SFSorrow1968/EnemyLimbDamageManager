@@ -6,145 +6,181 @@ namespace EnemyLimbDamageManager.Configuration
 {
     public static class ELDMModOptions
     {
-        public const string VERSION = "0.2.0";
+        public const string VERSION = "0.5.0";
 
-        public const string CategoryPresets = "Limb Damage Presets";
-        public const string CategoryLeftLeg = "Left Leg";
-        public const string CategoryRightLeg = "Right Leg";
-        public const string CategoryLeftArm = "Left Arm";
-        public const string CategoryRightArm = "Right Arm";
+        public const string CategoryLimbPresets = "Limb Presets";
+        public const string CategoryLastStandPresets = "Last Stand Presets";
+        public const string CategoryLegs = "Legs";
+        public const string CategoryArms = "Arms";
         public const string CategoryLastStand = "Last Stand";
         public const string CategoryOptional = "Optional";
         public const string CategoryDiagnostics = "Advanced";
 
         public const string OptionEnableMod = "Enable Mod";
-        public const string OptionPresetDamageModel = "Damage Model Preset";
-        public const string OptionPresetRecoveryModel = "Recovery Preset";
-        public const string OptionPresetSquirmModel = "Squirm Preset";
+        public const string OptionPresetDamageModel = "Damage Preset";
+        public const string OptionPresetLimbSlowModel = "Limb Slow Preset";
+        public const string OptionPresetLastStandModel = "Last Stand Preset";
+        public const string OptionPresetLastStandSlowModel = "Last Stand Slow Preset";
 
-        public const string OptionLeftLegThreshold = "Left Leg Damage To Disable";
-        public const string OptionLeftLegDisableDuration = "Left Leg Disable Duration Seconds";
-        public const string OptionLeftLegSquirmMultiplier = "Left Leg Squirm Multiplier";
+        public const string OptionLegThreshold = "Leg Damage To Disable";
+        public const string OptionLegDisableDuration = "Leg Disable Duration";
+        public const string OptionLegSlowDebuffPercent = "Leg Slow Debuff";
+        public const string OptionLegSlowStacks = "Leg Slow Stacking";
 
-        public const string OptionRightLegThreshold = "Right Leg Damage To Disable";
-        public const string OptionRightLegDisableDuration = "Right Leg Disable Duration Seconds";
-        public const string OptionRightLegSquirmMultiplier = "Right Leg Squirm Multiplier";
-
-        public const string OptionLeftArmThreshold = "Left Arm Damage To Disable";
-        public const string OptionLeftArmDisableDuration = "Left Arm Disable Duration Seconds";
-        public const string OptionLeftArmSquirmMultiplier = "Left Arm Squirm Multiplier";
-
-        public const string OptionRightArmThreshold = "Right Arm Damage To Disable";
-        public const string OptionRightArmDisableDuration = "Right Arm Disable Duration Seconds";
-        public const string OptionRightArmSquirmMultiplier = "Right Arm Squirm Multiplier";
+        public const string OptionArmThreshold = "Arm Damage To Disable";
+        public const string OptionArmDisableDuration = "Arm Disable Duration";
+        public const string OptionArmSlowDebuffPercent = "Arm Slow Debuff";
+        public const string OptionArmSlowStacks = "Arm Slow Stacking";
 
         public const string OptionRecoveryDelayMultiplier = "Recovery Delay Multiplier";
-        public const string OptionRecoveryDamageRetainedPercent = "Damage Retained After Recovery";
+        public const string OptionRecoveryDamageReductionPercent = "Recovery Damage Reduction";
+        public const string OptionRecoveryRestoresPinForces = "Recovery Restores Pin Forces";
+        public const string OptionDeadRevivalChancePercent = "Dead Recovery Chance";
+        public const string OptionMaxDeadRecoveries = "Max Death Recoveries";
+        public const string OptionDeadRecoverySlowPercent = "Death Recovery Slow Debuff";
+        public const string OptionKnockoutDurationSeconds = "Knockout Duration";
+        public const string OptionKnockoutRecoverySlowPercent = "Knockout Recovery Slow Debuff";
+        public const string OptionSlowDebuffsStack = "Slow Debuffs Stack";
 
         public const string OptionFallFromLegInjury = "Fall From Leg Injury";
         public const string OptionLegImmobilization = "Leg Immobilization";
         public const string OptionArmImmobilization = "Arm Immobilization";
         public const string OptionLastStandEnabled = "Enable Last Stand";
-        public const string OptionRecoveryClearsAccumulatedDamage = "Recovery Clears Damage";
-        public const string OptionRecoveryRestoresPinForces = "Recovery Restores Pin Forces";
+        public const string OptionKnockoutEnabled = "Enable Knockout";
 
         public const string OptionEnableBasicLogging = "Basic Logs";
         public const string OptionEnableDiagnosticsLogging = "Diagnostics Logs";
         public const string OptionEnableVerboseLogging = "Verbose Logs";
-        public const string OptionResetTracking = "Reset Tracking";
 
-        public const string PresetDamageForgiving = "Forgiving";
-        public const string PresetDamageDefaultPlus = "DefaultPlus";
-        public const string PresetDamageTactical = "Tactical";
+        public const string PresetDamageLenient = "Lenient";
+        public const string PresetDamageDefault = "Default";
+        public const string PresetDamageSevere = "Severe";
         public const string PresetDamageBrutal = "Brutal";
-        public const string PresetDamageSevered = "Severed";
+        public const string PresetDamageExtreme = "Extreme";
 
-        public const string PresetRecoveryDisabled = "Disabled";
-        public const string PresetRecoveryDefault = "DefaultLastStand";
-        public const string PresetRecoveryQuick = "QuickRecovery";
-        public const string PresetRecoverySlow = "SlowRecovery";
-        public const string PresetRecoveryComeback = "Comeback";
+        public const string PresetLimbSlowLow = "Low";
+        public const string PresetLimbSlowDefault = "Default";
+        public const string PresetLimbSlowHigh = "High";
 
-        public const string PresetSquirmLocked = "Locked";
-        public const string PresetSquirmTight = "Tight";
-        public const string PresetSquirmStandard = "Standard";
-        public const string PresetSquirmLoose = "Loose";
-        public const string PresetSquirmWild = "Wild";
+        public const string PresetLastStandLess = "Less";
+        public const string PresetLastStandDefault = "Default";
+        public const string PresetLastStandMore = "More";
+        private const string PresetLastStandOffLegacy = "OffLegacy";
+
+        public const string PresetLastStandSlowLight = "Light";
+        public const string PresetLastStandSlowDefault = "Default";
+        public const string PresetLastStandSlowHeavy = "Heavy";
+        public const string PresetLastStandSlowExtreme = "Extreme";
 
         private const float HardcodedMinimumTrackedHitDamage = 0.10f;
         private const bool HardcodedHitsRefreshDisableTimer = true;
 
-        [ModOption(name = OptionEnableMod, order = 0, defaultValueIndex = 1, tooltip = "Master switch for limb damage disable logic")]
+        public struct SourceSnapshot
+        {
+            public float LegsThresholdDamage;
+            public float LegsDisableDurationSeconds;
+            public float LegsSlowDebuffPercent;
+            public bool LegsSlowStacks;
+            public float ArmsThresholdDamage;
+            public float ArmsDisableDurationSeconds;
+            public float ArmsSlowDebuffPercent;
+            public bool ArmsSlowStacks;
+            public bool LastStandEnabled;
+            public bool FallFromLegInjury;
+            public bool LegImmobilization;
+            public bool ArmImmobilization;
+            public bool KnockoutEnabled;
+            public float RecoveryDelayMultiplier;
+            public float RecoveryDamageReductionPercent;
+            public bool RecoveryRestoresPinForces;
+            public float DeadRevivalChancePercent;
+            public int MaxDeadRecoveries;
+            public float DeadRecoverySlowPercent;
+            public float KnockoutDurationSeconds;
+            public float KnockoutRecoverySlowPercent;
+            public bool SlowDebuffsStack;
+        }
+
+        [ModOption(name = OptionEnableMod, order = 0, defaultValueIndex = 1, tooltip = "Master switch for limb disable, knockout, and last-stand systems")]
         public static bool EnableMod = true;
 
-        [ModOption(name = OptionPresetDamageModel, category = CategoryPresets, categoryOrder = 0, order = 5, defaultValueIndex = 1, valueSourceName = nameof(DamagePresetProvider), tooltip = "Batch writes per-limb damage and duration values")]
-        public static string PresetDamageModel = PresetDamageDefaultPlus;
+        [ModOption(name = OptionPresetDamageModel, category = CategoryLimbPresets, categoryOrder = 0, order = 0, defaultValueIndex = 1, valueSourceName = nameof(DamagePresetProvider), tooltip = "Batch writes limb thresholds + disable durations")]
+        public static string PresetDamageModel = PresetDamageDefault;
 
-        [ModOption(name = OptionPresetRecoveryModel, category = CategoryPresets, categoryOrder = 0, order = 10, defaultValueIndex = 1, valueSourceName = nameof(RecoveryPresetProvider), tooltip = "Batch writes recovery behavior values")]
-        public static string PresetRecoveryModel = PresetRecoveryDefault;
+        [ModOption(name = OptionPresetLimbSlowModel, category = CategoryLimbPresets, categoryOrder = 0, order = 10, defaultValueIndex = 1, valueSourceName = nameof(LimbSlowPresetProvider), tooltip = "Batch writes limb slow debuffs and limb stacking toggles")]
+        public static string PresetLimbSlowModel = PresetLimbSlowDefault;
 
-        [ModOption(name = OptionPresetSquirmModel, category = CategoryPresets, categoryOrder = 0, order = 15, defaultValueIndex = 1, valueSourceName = nameof(SquirmPresetProvider), tooltip = "Batch writes all limb squirm multipliers")]
-        public static string PresetSquirmModel = PresetSquirmTight;
+        [ModOption(name = OptionPresetLastStandModel, category = CategoryLastStandPresets, categoryOrder = 1, order = 0, defaultValueIndex = 1, valueSourceName = nameof(LastStandPresetProvider), tooltip = "Batch writes revive and recovery behavior")]
+        public static string PresetLastStandModel = PresetLastStandDefault;
 
-        [ModOption(name = OptionLeftLegThreshold, category = CategoryLeftLeg, categoryOrder = 100, order = 0, defaultValueIndex = 9, valueSourceName = nameof(ThresholdDamageProvider), interactionType = (ModOption.InteractionType)2)]
-        public static float LeftLegThresholdDamage = 22f;
+        [ModOption(name = OptionPresetLastStandSlowModel, category = CategoryLastStandPresets, categoryOrder = 1, order = 10, defaultValueIndex = 1, valueSourceName = nameof(LastStandSlowPresetProvider), tooltip = "Batch writes knockout/death-recovery slowness and stacking style")]
+        public static string PresetLastStandSlowModel = PresetLastStandSlowDefault;
 
-        [ModOption(name = OptionLeftLegDisableDuration, category = CategoryLeftLeg, categoryOrder = 100, order = 10, defaultValueIndex = 6, valueSourceName = nameof(DisableDurationProvider), interactionType = (ModOption.InteractionType)2)]
-        public static float LeftLegDisableDurationSeconds = 14f;
+        [ModOption(name = OptionLegThreshold, category = CategoryLegs, categoryOrder = 100, order = 0, defaultValueIndex = 8, valueSourceName = nameof(ThresholdDamageProvider), interactionType = (ModOption.InteractionType)2)]
+        public static float LegsThresholdDamage = 22f;
 
-        [ModOption(name = OptionLeftLegSquirmMultiplier, category = CategoryLeftLeg, categoryOrder = 100, order = 20, defaultValueIndex = 1, valueSourceName = nameof(SquirmMultiplierProvider), interactionType = (ModOption.InteractionType)2)]
-        public static float LeftLegSquirmMultiplier = 0.10f;
+        [ModOption(name = OptionLegDisableDuration, category = CategoryLegs, categoryOrder = 100, order = 10, defaultValueIndex = 6, valueSourceName = nameof(DisableDurationProvider), interactionType = (ModOption.InteractionType)2)]
+        public static float LegsDisableDurationSeconds = 14f;
 
-        [ModOption(name = OptionRightLegThreshold, category = CategoryRightLeg, categoryOrder = 110, order = 0, defaultValueIndex = 9, valueSourceName = nameof(ThresholdDamageProvider), interactionType = (ModOption.InteractionType)2)]
-        public static float RightLegThresholdDamage = 22f;
+        [ModOption(name = OptionLegSlowDebuffPercent, category = CategoryLegs, categoryOrder = 100, order = 20, defaultValueIndex = 1, valueSourceName = nameof(TenPercentProvider), interactionType = (ModOption.InteractionType)2)]
+        public static float LegsSlowDebuffPercent = 10f;
 
-        [ModOption(name = OptionRightLegDisableDuration, category = CategoryRightLeg, categoryOrder = 110, order = 10, defaultValueIndex = 6, valueSourceName = nameof(DisableDurationProvider), interactionType = (ModOption.InteractionType)2)]
-        public static float RightLegDisableDurationSeconds = 14f;
+        [ModOption(name = OptionLegSlowStacks, category = CategoryLegs, categoryOrder = 100, order = 30, defaultValueIndex = 1)]
+        public static bool LegsSlowStacks = true;
 
-        [ModOption(name = OptionRightLegSquirmMultiplier, category = CategoryRightLeg, categoryOrder = 110, order = 20, defaultValueIndex = 1, valueSourceName = nameof(SquirmMultiplierProvider), interactionType = (ModOption.InteractionType)2)]
-        public static float RightLegSquirmMultiplier = 0.10f;
+        [ModOption(name = OptionArmThreshold, category = CategoryArms, categoryOrder = 110, order = 0, defaultValueIndex = 10, valueSourceName = nameof(ThresholdDamageProvider), interactionType = (ModOption.InteractionType)2)]
+        public static float ArmsThresholdDamage = 26f;
 
-        [ModOption(name = OptionLeftArmThreshold, category = CategoryLeftArm, categoryOrder = 120, order = 0, defaultValueIndex = 11, valueSourceName = nameof(ThresholdDamageProvider), interactionType = (ModOption.InteractionType)2)]
-        public static float LeftArmThresholdDamage = 26f;
+        [ModOption(name = OptionArmDisableDuration, category = CategoryArms, categoryOrder = 110, order = 10, defaultValueIndex = 4, valueSourceName = nameof(DisableDurationProvider), interactionType = (ModOption.InteractionType)2)]
+        public static float ArmsDisableDurationSeconds = 10f;
 
-        [ModOption(name = OptionLeftArmDisableDuration, category = CategoryLeftArm, categoryOrder = 120, order = 10, defaultValueIndex = 4, valueSourceName = nameof(DisableDurationProvider), interactionType = (ModOption.InteractionType)2)]
-        public static float LeftArmDisableDurationSeconds = 10f;
+        [ModOption(name = OptionArmSlowDebuffPercent, category = CategoryArms, categoryOrder = 110, order = 20, defaultValueIndex = 1, valueSourceName = nameof(FivePercentProvider), interactionType = (ModOption.InteractionType)2)]
+        public static float ArmsSlowDebuffPercent = 5f;
 
-        [ModOption(name = OptionLeftArmSquirmMultiplier, category = CategoryLeftArm, categoryOrder = 120, order = 20, defaultValueIndex = 1, valueSourceName = nameof(SquirmMultiplierProvider), interactionType = (ModOption.InteractionType)2)]
-        public static float LeftArmSquirmMultiplier = 0.10f;
+        [ModOption(name = OptionArmSlowStacks, category = CategoryArms, categoryOrder = 110, order = 30, defaultValueIndex = 1)]
+        public static bool ArmsSlowStacks = true;
 
-        [ModOption(name = OptionRightArmThreshold, category = CategoryRightArm, categoryOrder = 130, order = 0, defaultValueIndex = 11, valueSourceName = nameof(ThresholdDamageProvider), interactionType = (ModOption.InteractionType)2)]
-        public static float RightArmThresholdDamage = 26f;
-
-        [ModOption(name = OptionRightArmDisableDuration, category = CategoryRightArm, categoryOrder = 130, order = 10, defaultValueIndex = 4, valueSourceName = nameof(DisableDurationProvider), interactionType = (ModOption.InteractionType)2)]
-        public static float RightArmDisableDurationSeconds = 10f;
-
-        [ModOption(name = OptionRightArmSquirmMultiplier, category = CategoryRightArm, categoryOrder = 130, order = 20, defaultValueIndex = 1, valueSourceName = nameof(SquirmMultiplierProvider), interactionType = (ModOption.InteractionType)2)]
-        public static float RightArmSquirmMultiplier = 0.10f;
-
-        [ModOption(name = OptionRecoveryDelayMultiplier, category = CategoryLastStand, categoryOrder = 160, order = 10, defaultValueIndex = 3, valueSourceName = nameof(RecoveryDelayProvider), interactionType = (ModOption.InteractionType)2)]
+        [ModOption(name = OptionRecoveryDelayMultiplier, category = CategoryLastStand, categoryOrder = 120, order = 0, defaultValueIndex = 3, valueSourceName = nameof(RecoveryDelayProvider), interactionType = (ModOption.InteractionType)2)]
         public static float RecoveryDelayMultiplier = 1.00f;
 
-        [ModOption(name = OptionRecoveryDamageRetainedPercent, category = CategoryLastStand, categoryOrder = 160, order = 30, defaultValueIndex = 5, valueSourceName = nameof(RecoveryRetainedDamageProvider), interactionType = (ModOption.InteractionType)2)]
-        public static float RecoveryDamageRetainedPercent = 35f;
+        [ModOption(name = OptionRecoveryDamageReductionPercent, category = CategoryLastStand, categoryOrder = 120, order = 10, defaultValueIndex = 4, valueSourceName = nameof(TenPercentProvider), interactionType = (ModOption.InteractionType)2)]
+        public static float RecoveryDamageReductionPercent = 40f;
+
+        [ModOption(name = OptionRecoveryRestoresPinForces, category = CategoryLastStand, categoryOrder = 120, order = 20, defaultValueIndex = 1)]
+        public static bool RecoveryRestoresPinForces = true;
+
+        [ModOption(name = OptionDeadRevivalChancePercent, category = CategoryLastStand, categoryOrder = 120, order = 30, defaultValueIndex = 1, valueSourceName = nameof(TenPercentProvider), interactionType = (ModOption.InteractionType)2)]
+        public static float DeadRevivalChancePercent = 10f;
+
+        [ModOption(name = OptionMaxDeadRecoveries, category = CategoryLastStand, categoryOrder = 120, order = 35, defaultValueIndex = 2, valueSourceName = nameof(MaxDeadRecoveriesProvider), interactionType = (ModOption.InteractionType)2)]
+        public static float MaxDeadRecoveriesValue = 2f;
+
+        [ModOption(name = OptionDeadRecoverySlowPercent, category = CategoryLastStand, categoryOrder = 120, order = 40, defaultValueIndex = 6, valueSourceName = nameof(TenPercentProvider), interactionType = (ModOption.InteractionType)2)]
+        public static float DeadRecoverySlowPercent = 60f;
+
+        [ModOption(name = OptionKnockoutDurationSeconds, category = CategoryLastStand, categoryOrder = 120, order = 50, defaultValueIndex = 3, valueSourceName = nameof(KnockoutDurationProvider), interactionType = (ModOption.InteractionType)2)]
+        public static float KnockoutDurationSeconds = 8f;
+
+        [ModOption(name = OptionKnockoutRecoverySlowPercent, category = CategoryLastStand, categoryOrder = 120, order = 60, defaultValueIndex = 4, valueSourceName = nameof(TenPercentProvider), interactionType = (ModOption.InteractionType)2)]
+        public static float KnockoutRecoverySlowPercent = 40f;
+
+        [ModOption(name = OptionSlowDebuffsStack, category = CategoryLastStand, categoryOrder = 120, order = 70, defaultValueIndex = 1)]
+        public static bool SlowDebuffsStack = true;
 
         [ModOption(name = OptionFallFromLegInjury, category = CategoryOptional, categoryOrder = 180, order = 0, defaultValueIndex = 1)]
         public static bool FallFromLegInjury = true;
 
-        [ModOption(name = OptionLegImmobilization, category = CategoryOptional, categoryOrder = 180, order = 5, defaultValueIndex = 1)]
+        [ModOption(name = OptionLegImmobilization, category = CategoryOptional, categoryOrder = 180, order = 10, defaultValueIndex = 1)]
         public static bool LegImmobilization = true;
 
-        [ModOption(name = OptionArmImmobilization, category = CategoryOptional, categoryOrder = 180, order = 10, defaultValueIndex = 1)]
+        [ModOption(name = OptionArmImmobilization, category = CategoryOptional, categoryOrder = 180, order = 20, defaultValueIndex = 1)]
         public static bool ArmImmobilization = true;
 
-        [ModOption(name = OptionLastStandEnabled, category = CategoryOptional, categoryOrder = 180, order = 15, defaultValueIndex = 1)]
+        [ModOption(name = OptionLastStandEnabled, category = CategoryOptional, categoryOrder = 180, order = 30, defaultValueIndex = 1)]
         public static bool LastStandEnabled = true;
 
-        [ModOption(name = OptionRecoveryClearsAccumulatedDamage, category = CategoryOptional, categoryOrder = 180, order = 20, defaultValueIndex = 1)]
-        public static bool RecoveryClearsAccumulatedDamage = true;
-
-        [ModOption(name = OptionRecoveryRestoresPinForces, category = CategoryOptional, categoryOrder = 180, order = 25, defaultValueIndex = 1)]
-        public static bool RecoveryRestoresPinForces = true;
+        [ModOption(name = OptionKnockoutEnabled, category = CategoryOptional, categoryOrder = 180, order = 40, defaultValueIndex = 1)]
+        public static bool KnockoutEnabled = true;
 
         [ModOption(name = OptionEnableBasicLogging, category = CategoryDiagnostics, categoryOrder = 200, order = 0, defaultValueIndex = 1, tooltip = "Enable high-level state logs")]
         public static bool EnableBasicLogging = true;
@@ -155,254 +191,170 @@ namespace EnemyLimbDamageManager.Configuration
         [ModOption(name = OptionEnableVerboseLogging, category = CategoryDiagnostics, categoryOrder = 200, order = 4, defaultValueIndex = 0, tooltip = "Enable high-volume per-hit logs")]
         public static bool EnableVerboseLogging = false;
 
-        [ModOption(name = OptionResetTracking, category = CategoryDiagnostics, categoryOrder = 200, order = 20, defaultValueIndex = 0, tooltip = "Clear all runtime creature/limb tracking")]
-        [ModOptionDontSave]
-        public static bool ResetTracking;
-
-        public static ModOptionString[] DamagePresetProvider()
+        public static ModOptionString[] DamagePresetProvider() => new[]
         {
-            return new[]
+            new ModOptionString("Lenient", PresetDamageLenient),
+            new ModOptionString("Default", PresetDamageDefault),
+            new ModOptionString("Severe", PresetDamageSevere),
+            new ModOptionString("Brutal", PresetDamageBrutal),
+            new ModOptionString("Extreme", PresetDamageExtreme),
+        };
+
+        public static ModOptionString[] LimbSlowPresetProvider() => new[]
+        {
+            new ModOptionString("Low", PresetLimbSlowLow),
+            new ModOptionString("Default", PresetLimbSlowDefault),
+            new ModOptionString("High", PresetLimbSlowHigh),
+        };
+
+        public static ModOptionString[] LastStandPresetProvider() => new[]
+        {
+            new ModOptionString("Less", PresetLastStandLess),
+            new ModOptionString("Default", PresetLastStandDefault),
+            new ModOptionString("More", PresetLastStandMore),
+        };
+
+        public static ModOptionString[] LastStandSlowPresetProvider() => new[]
+        {
+            new ModOptionString("Light", PresetLastStandSlowLight),
+            new ModOptionString("Default", PresetLastStandSlowDefault),
+            new ModOptionString("Heavy", PresetLastStandSlowHeavy),
+            new ModOptionString("Extreme", PresetLastStandSlowExtreme),
+        };
+
+        public static ModOptionFloat[] ThresholdDamageProvider() => new[]
+        {
+            new ModOptionFloat("6", 6f), new ModOptionFloat("8", 8f), new ModOptionFloat("10", 10f),
+            new ModOptionFloat("12", 12f), new ModOptionFloat("14", 14f), new ModOptionFloat("16", 16f),
+            new ModOptionFloat("18", 18f), new ModOptionFloat("20", 20f), new ModOptionFloat("22", 22f),
+            new ModOptionFloat("24", 24f), new ModOptionFloat("26", 26f), new ModOptionFloat("28", 28f),
+            new ModOptionFloat("30", 30f), new ModOptionFloat("35", 35f), new ModOptionFloat("40", 40f), new ModOptionFloat("50", 50f),
+        };
+
+        public static ModOptionFloat[] DisableDurationProvider() => new[]
+        {
+            new ModOptionFloat("2s", 2f), new ModOptionFloat("4s", 4f), new ModOptionFloat("6s", 6f),
+            new ModOptionFloat("8s", 8f), new ModOptionFloat("10s", 10f), new ModOptionFloat("12s", 12f),
+            new ModOptionFloat("14s", 14f), new ModOptionFloat("16s", 16f), new ModOptionFloat("20s", 20f),
+            new ModOptionFloat("25s", 25f), new ModOptionFloat("30s", 30f), new ModOptionFloat("40s", 40f),
+            new ModOptionFloat("60s", 60f), new ModOptionFloat("120s", 120f),
+        };
+
+        public static ModOptionFloat[] RecoveryDelayProvider() => new[]
+        {
+            new ModOptionFloat("0.40x", 0.40f), new ModOptionFloat("0.60x", 0.60f), new ModOptionFloat("0.80x", 0.80f),
+            new ModOptionFloat("1.00x", 1.00f), new ModOptionFloat("1.20x", 1.20f), new ModOptionFloat("1.40x", 1.40f),
+            new ModOptionFloat("1.80x", 1.80f), new ModOptionFloat("2.20x", 2.20f), new ModOptionFloat("3.00x", 3.00f),
+        };
+
+        public static ModOptionFloat[] FivePercentProvider()
+        {
+            ModOptionFloat[] values = new ModOptionFloat[21];
+            for (int i = 0; i < values.Length; i++)
             {
-                new ModOptionString("Forgiving", PresetDamageForgiving),
-                new ModOptionString("Default Plus", PresetDamageDefaultPlus),
-                new ModOptionString("Tactical", PresetDamageTactical),
-                new ModOptionString("Brutal", PresetDamageBrutal),
-                new ModOptionString("Severed", PresetDamageSevered),
-            };
+                float value = i * 5f;
+                values[i] = new ModOptionFloat(value.ToString("0") + "%", value);
+            }
+
+            return values;
         }
 
-        public static ModOptionString[] RecoveryPresetProvider()
+        public static ModOptionFloat[] TenPercentProvider()
         {
-            return new[]
+            ModOptionFloat[] values = new ModOptionFloat[11];
+            for (int i = 0; i < values.Length; i++)
             {
-                new ModOptionString("Default Last Stand", PresetRecoveryDefault),
-                new ModOptionString("Quick Recovery", PresetRecoveryQuick),
-                new ModOptionString("Slow Recovery", PresetRecoverySlow),
-                new ModOptionString("Comeback", PresetRecoveryComeback),
-                new ModOptionString("Disabled", PresetRecoveryDisabled),
-            };
+                float value = i * 10f;
+                values[i] = new ModOptionFloat(value.ToString("0") + "%", value);
+            }
+
+            return values;
         }
 
-        public static ModOptionString[] SquirmPresetProvider()
+        public static ModOptionFloat[] MaxDeadRecoveriesProvider() => new[]
         {
-            return new[]
-            {
-                new ModOptionString("Locked", PresetSquirmLocked),
-                new ModOptionString("Tight", PresetSquirmTight),
-                new ModOptionString("Standard", PresetSquirmStandard),
-                new ModOptionString("Loose", PresetSquirmLoose),
-                new ModOptionString("Wild", PresetSquirmWild),
-            };
-        }
+            new ModOptionFloat("0", 0f), new ModOptionFloat("1", 1f), new ModOptionFloat("2", 2f),
+            new ModOptionFloat("3", 3f), new ModOptionFloat("4", 4f), new ModOptionFloat("5", 5f),
+        };
 
-        public static ModOptionFloat[] ThresholdDamageProvider()
+        public static ModOptionFloat[] KnockoutDurationProvider() => new[]
         {
-            return new[]
-            {
-                new ModOptionFloat("6", 6f),
-                new ModOptionFloat("8", 8f),
-                new ModOptionFloat("10", 10f),
-                new ModOptionFloat("12", 12f),
-                new ModOptionFloat("14", 14f),
-                new ModOptionFloat("16", 16f),
-                new ModOptionFloat("18", 18f),
-                new ModOptionFloat("20", 20f),
-                new ModOptionFloat("21", 21f),
-                new ModOptionFloat("22", 22f),
-                new ModOptionFloat("24", 24f),
-                new ModOptionFloat("26", 26f),
-                new ModOptionFloat("28", 28f),
-                new ModOptionFloat("30", 30f),
-                new ModOptionFloat("35", 35f),
-                new ModOptionFloat("40", 40f),
-                new ModOptionFloat("50", 50f),
-            };
-        }
-
-        public static ModOptionFloat[] DisableDurationProvider()
-        {
-            return new[]
-            {
-                new ModOptionFloat("2s", 2f),
-                new ModOptionFloat("4s", 4f),
-                new ModOptionFloat("6s", 6f),
-                new ModOptionFloat("8s", 8f),
-                new ModOptionFloat("10s", 10f),
-                new ModOptionFloat("12s", 12f),
-                new ModOptionFloat("14s", 14f),
-                new ModOptionFloat("16s", 16f),
-                new ModOptionFloat("20s", 20f),
-                new ModOptionFloat("25s", 25f),
-                new ModOptionFloat("30s", 30f),
-                new ModOptionFloat("40s", 40f),
-                new ModOptionFloat("60s", 60f),
-                new ModOptionFloat("120s", 120f),
-            };
-        }
-
-        public static ModOptionFloat[] SquirmMultiplierProvider()
-        {
-            return new[]
-            {
-                new ModOptionFloat("0.00", 0.00f),
-                new ModOptionFloat("0.10", 0.10f),
-                new ModOptionFloat("0.20", 0.20f),
-                new ModOptionFloat("0.30", 0.30f),
-                new ModOptionFloat("0.40", 0.40f),
-                new ModOptionFloat("0.50", 0.50f),
-                new ModOptionFloat("0.65", 0.65f),
-                new ModOptionFloat("0.80", 0.80f),
-            };
-        }
-
-        public static ModOptionFloat[] RecoveryDelayProvider()
-        {
-            return new[]
-            {
-                new ModOptionFloat("0.25x", 0.25f),
-                new ModOptionFloat("0.40x", 0.40f),
-                new ModOptionFloat("0.60x", 0.60f),
-                new ModOptionFloat("1.00x", 1.00f),
-                new ModOptionFloat("1.25x", 1.25f),
-                new ModOptionFloat("1.50x", 1.50f),
-                new ModOptionFloat("1.80x", 1.80f),
-                new ModOptionFloat("2.20x", 2.20f),
-                new ModOptionFloat("3.00x", 3.00f),
-            };
-        }
-
-        public static ModOptionFloat[] RecoveryRetainedDamageProvider()
-        {
-            return new[]
-            {
-                new ModOptionFloat("0%", 0f),
-                new ModOptionFloat("10%", 10f),
-                new ModOptionFloat("20%", 20f),
-                new ModOptionFloat("25%", 25f),
-                new ModOptionFloat("30%", 30f),
-                new ModOptionFloat("35%", 35f),
-                new ModOptionFloat("40%", 40f),
-                new ModOptionFloat("50%", 50f),
-                new ModOptionFloat("60%", 60f),
-                new ModOptionFloat("75%", 75f),
-                new ModOptionFloat("100%", 100f),
-            };
-        }
+            new ModOptionFloat("2s", 2f), new ModOptionFloat("4s", 4f), new ModOptionFloat("6s", 6f),
+            new ModOptionFloat("8s", 8f), new ModOptionFloat("10s", 10f), new ModOptionFloat("12s", 12f),
+            new ModOptionFloat("15s", 15f), new ModOptionFloat("20s", 20f),
+        };
 
         public static bool ApplySelectedPresets()
         {
             string damagePreset = NormalizeDamagePreset(PresetDamageModel);
-            string recoveryPreset = NormalizeRecoveryPreset(PresetRecoveryModel);
-            string squirmPreset = NormalizeSquirmPreset(PresetSquirmModel);
+            string limbSlowPreset = NormalizeLimbSlowPreset(PresetLimbSlowModel);
+            string lastStandPreset = NormalizeLastStandPreset(PresetLastStandModel);
+            string lastStandSlowPreset = NormalizeLastStandSlowPreset(PresetLastStandSlowModel);
 
-            ResolveDamagePreset(
-                damagePreset,
-                out float leftLegThreshold,
-                out float rightLegThreshold,
-                out float leftArmThreshold,
-                out float rightArmThreshold,
-                out float leftLegDuration,
-                out float rightLegDuration,
-                out float leftArmDuration,
-                out float rightArmDuration);
+            ResolveDamagePreset(damagePreset, out float legsThreshold, out float armsThreshold, out float legsDuration, out float armsDuration);
+            ResolveLimbSlowPreset(limbSlowPreset, out float legsSlow, out float armsSlow, out bool legsSlowStacks, out bool armsSlowStacks);
 
-            ResolveRecoveryPreset(
-                recoveryPreset,
-                out bool lastStandEnabled,
-                out float recoveryDelayMultiplier,
-                out bool clearsDamage,
-                out float retainedDamage,
-                out bool restorePins);
+            ResolveLastStandPreset(
+                lastStandPreset,
+                out float recoveryDelay,
+                out float recoveryReduction,
+                out bool restorePins,
+                out float deadChance,
+                out int maxRecoveries,
+                out float deadSlow,
+                out float knockoutDuration,
+                out float knockoutSlow,
+                out bool? forceLastStandEnabled);
 
-            ResolveSquirmPreset(
-                squirmPreset,
-                out float leftLegSquirm,
-                out float rightLegSquirm,
-                out float leftArmSquirm,
-                out float rightArmSquirm);
+            ResolveLastStandSlowPreset(lastStandSlowPreset, out float slowPresetKnockout, out float slowPresetDead, out bool slowPresetStacking);
 
             bool changed = false;
-            changed |= SetFloat(ref LeftLegThresholdDamage, leftLegThreshold, 1f, 200f);
-            changed |= SetFloat(ref RightLegThresholdDamage, rightLegThreshold, 1f, 200f);
-            changed |= SetFloat(ref LeftArmThresholdDamage, leftArmThreshold, 1f, 200f);
-            changed |= SetFloat(ref RightArmThresholdDamage, rightArmThreshold, 1f, 200f);
+            changed |= SetFloat(ref LegsThresholdDamage, legsThreshold, 1f, 200f);
+            changed |= SetFloat(ref ArmsThresholdDamage, armsThreshold, 1f, 200f);
+            changed |= SetFloat(ref LegsDisableDurationSeconds, legsDuration, 1f, 600f);
+            changed |= SetFloat(ref ArmsDisableDurationSeconds, armsDuration, 1f, 600f);
+            changed |= SetFloat(ref LegsSlowDebuffPercent, legsSlow, 0f, 100f);
+            changed |= SetFloat(ref ArmsSlowDebuffPercent, armsSlow, 0f, 100f);
+            changed |= SetBool(ref LegsSlowStacks, legsSlowStacks);
+            changed |= SetBool(ref ArmsSlowStacks, armsSlowStacks);
 
-            changed |= SetFloat(ref LeftLegDisableDurationSeconds, leftLegDuration, 1f, 600f);
-            changed |= SetFloat(ref RightLegDisableDurationSeconds, rightLegDuration, 1f, 600f);
-            changed |= SetFloat(ref LeftArmDisableDurationSeconds, leftArmDuration, 1f, 600f);
-            changed |= SetFloat(ref RightArmDisableDurationSeconds, rightArmDuration, 1f, 600f);
-
-            changed |= SetFloat(ref LeftLegSquirmMultiplier, leftLegSquirm, 0f, 1f);
-            changed |= SetFloat(ref RightLegSquirmMultiplier, rightLegSquirm, 0f, 1f);
-            changed |= SetFloat(ref LeftArmSquirmMultiplier, leftArmSquirm, 0f, 1f);
-            changed |= SetFloat(ref RightArmSquirmMultiplier, rightArmSquirm, 0f, 1f);
-
-            changed |= SetBool(ref LastStandEnabled, lastStandEnabled);
-            changed |= SetFloat(ref RecoveryDelayMultiplier, recoveryDelayMultiplier, 0.1f, 10f);
-            changed |= SetBool(ref RecoveryClearsAccumulatedDamage, clearsDamage);
-            changed |= SetFloat(ref RecoveryDamageRetainedPercent, retainedDamage, 0f, 100f);
+            changed |= SetFloat(ref RecoveryDelayMultiplier, recoveryDelay, 0.1f, 10f);
+            changed |= SetFloat(ref RecoveryDamageReductionPercent, recoveryReduction, 0f, 100f);
             changed |= SetBool(ref RecoveryRestoresPinForces, restorePins);
+            changed |= SetFloat(ref DeadRevivalChancePercent, deadChance, 0f, 100f);
+            changed |= SetFloat(ref MaxDeadRecoveriesValue, maxRecoveries, 0f, 10f);
+            changed |= SetFloat(ref DeadRecoverySlowPercent, deadSlow, 0f, 100f);
+            changed |= SetFloat(ref KnockoutDurationSeconds, knockoutDuration, 1f, 60f);
+            changed |= SetFloat(ref KnockoutRecoverySlowPercent, knockoutSlow, 0f, 100f);
+
+            changed |= SetFloat(ref KnockoutRecoverySlowPercent, slowPresetKnockout, 0f, 100f);
+            changed |= SetFloat(ref DeadRecoverySlowPercent, slowPresetDead, 0f, 100f);
+            changed |= SetBool(ref SlowDebuffsStack, slowPresetStacking);
+
+            if (forceLastStandEnabled.HasValue)
+            {
+                changed |= SetBool(ref LastStandEnabled, forceLastStandEnabled.Value);
+            }
 
             return changed;
         }
 
-        public static float GetMinimumTrackedHitDamage()
-        {
-            return HardcodedMinimumTrackedHitDamage;
-        }
-
-        public static bool ShouldRefreshDisableTimerOnHit()
-        {
-            return HardcodedHitsRefreshDisableTimer;
-        }
+        public static float GetMinimumTrackedHitDamage() => HardcodedMinimumTrackedHitDamage;
+        public static bool ShouldRefreshDisableTimerOnHit() => HardcodedHitsRefreshDisableTimer;
 
         public static float GetLimbThresholdDamage(RagdollPart.Type limbType)
         {
-            switch (limbType)
-            {
-                case RagdollPart.Type.LeftLeg:
-                case RagdollPart.Type.LeftFoot:
-                    return Mathf.Max(1f, LeftLegThresholdDamage);
-                case RagdollPart.Type.RightLeg:
-                case RagdollPart.Type.RightFoot:
-                    return Mathf.Max(1f, RightLegThresholdDamage);
-                case RagdollPart.Type.LeftArm:
-                case RagdollPart.Type.LeftHand:
-                    return Mathf.Max(1f, LeftArmThresholdDamage);
-                case RagdollPart.Type.RightArm:
-                case RagdollPart.Type.RightHand:
-                    return Mathf.Max(1f, RightArmThresholdDamage);
-                default:
-                    return float.PositiveInfinity;
-            }
+            return IsLegType(limbType)
+                ? Mathf.Max(1f, LegsThresholdDamage)
+                : Mathf.Max(1f, ArmsThresholdDamage);
         }
 
         public static float GetLimbDisableDurationSeconds(RagdollPart.Type limbType)
         {
-            float duration;
-            switch (limbType)
-            {
-                case RagdollPart.Type.LeftLeg:
-                case RagdollPart.Type.LeftFoot:
-                    duration = LeftLegDisableDurationSeconds;
-                    break;
-                case RagdollPart.Type.RightLeg:
-                case RagdollPart.Type.RightFoot:
-                    duration = RightLegDisableDurationSeconds;
-                    break;
-                case RagdollPart.Type.LeftArm:
-                case RagdollPart.Type.LeftHand:
-                    duration = LeftArmDisableDurationSeconds;
-                    break;
-                case RagdollPart.Type.RightArm:
-                case RagdollPart.Type.RightHand:
-                    duration = RightArmDisableDurationSeconds;
-                    break;
-                default:
-                    return 0f;
-            }
+            float baseDuration = IsLegType(limbType)
+                ? Mathf.Max(1f, LegsDisableDurationSeconds)
+                : Mathf.Max(1f, ArmsDisableDurationSeconds);
 
-            float baseDuration = Mathf.Max(1f, duration);
             if (!LastStandEnabled)
             {
                 return float.PositiveInfinity;
@@ -411,246 +363,438 @@ namespace EnemyLimbDamageManager.Configuration
             return baseDuration * Mathf.Clamp(RecoveryDelayMultiplier, 0.1f, 10f);
         }
 
-        public static float GetLimbSquirmMultiplier(RagdollPart.Type limbType)
+        public static float GetLimbSlowDebuffRatio(RagdollPart.Type limbType)
         {
-            switch (limbType)
-            {
-                case RagdollPart.Type.LeftLeg:
-                case RagdollPart.Type.LeftFoot:
-                    return Mathf.Clamp01(LeftLegSquirmMultiplier);
-                case RagdollPart.Type.RightLeg:
-                case RagdollPart.Type.RightFoot:
-                    return Mathf.Clamp01(RightLegSquirmMultiplier);
-                case RagdollPart.Type.LeftArm:
-                case RagdollPart.Type.LeftHand:
-                    return Mathf.Clamp01(LeftArmSquirmMultiplier);
-                case RagdollPart.Type.RightArm:
-                case RagdollPart.Type.RightHand:
-                    return Mathf.Clamp01(RightArmSquirmMultiplier);
-                default:
-                    return 0f;
-            }
+            return IsLegType(limbType)
+                ? Mathf.Clamp01(LegsSlowDebuffPercent / 100f)
+                : Mathf.Clamp01(ArmsSlowDebuffPercent / 100f);
         }
+
+        public static bool GetLimbSlowStacks(RagdollPart.Type limbType)
+        {
+            return IsLegType(limbType) ? LegsSlowStacks : ArmsSlowStacks;
+        }
+
+        public static float GetKnockoutRecoverySlowDebuffRatio()
+        {
+            return Mathf.Clamp01(KnockoutRecoverySlowPercent / 100f);
+        }
+
+        public static float GetDeadRecoverySlowDebuffRatio()
+        {
+            return Mathf.Clamp01(DeadRecoverySlowPercent / 100f);
+        }
+
+        public static float GetKnockoutRecoverySlowDurationSeconds()
+        {
+            float duration = 10f * Mathf.Clamp(RecoveryDelayMultiplier, 0.1f, 10f);
+            return Mathf.Clamp(duration, 4f, 35f);
+        }
+
+        public static float GetDeadRecoverySlowDurationSeconds()
+        {
+            float duration = 20f * Mathf.Clamp(RecoveryDelayMultiplier, 0.1f, 10f);
+            return Mathf.Clamp(duration, 8f, 60f);
+        }
+
+        public static bool UseSlowDebuffStacking() => SlowDebuffsStack;
+        public static int GetMaxDeadRecoveries() => Mathf.Clamp(Mathf.RoundToInt(MaxDeadRecoveriesValue), 0, 10);
 
         public static float GetRetainedDamageRatioAfterRecovery()
         {
-            if (RecoveryClearsAccumulatedDamage)
+            float reductionRatio = Mathf.Clamp01(RecoveryDamageReductionPercent / 100f);
+            return 1f - reductionRatio;
+        }
+
+        public static bool CanAttemptDeadRecovery()
+        {
+            return LastStandEnabled && DeadRevivalChancePercent > 0f && GetMaxDeadRecoveries() > 0;
+        }
+
+        public static float GetDeadRevivalChanceRatio()
+        {
+            return Mathf.Clamp01(DeadRevivalChancePercent / 100f);
+        }
+
+        public static float GetEffectiveDeadRecoveryChanceRatio(int successfulRecoveries)
+        {
+            float baseChance = GetDeadRevivalChanceRatio();
+            int tiers = Mathf.Max(0, successfulRecoveries);
+            return Mathf.Clamp01(baseChance * Mathf.Pow(0.5f, tiers));
+        }
+
+        public static float GetDeadRevivalHealth()
+        {
+            float reductionRatio = Mathf.Clamp01(RecoveryDamageReductionPercent / 100f);
+            return Mathf.Clamp(0.25f + (reductionRatio * 0.50f), 0.20f, 0.75f);
+        }
+
+        public static float GetDeadRevivalDelaySeconds()
+        {
+            float delay = 4f * Mathf.Clamp(RecoveryDelayMultiplier, 0.1f, 10f);
+            return Mathf.Clamp(delay, 1.5f, 15f);
+        }
+
+        public static float GetKnockoutDurationSeconds()
+        {
+            return Mathf.Clamp(KnockoutDurationSeconds, 1f, 60f);
+        }
+
+        public static bool IsExcludedDeadRecoveryPart(RagdollPart part)
+        {
+            if (part == null)
             {
-                return 0f;
+                return false;
             }
 
-            return Mathf.Clamp01(RecoveryDamageRetainedPercent / 100f);
+            if (part.type == RagdollPart.Type.Head || part.type == RagdollPart.Type.Neck)
+            {
+                return true;
+            }
+
+            string token = BuildPartToken(part);
+            if (token.Length == 0)
+            {
+                return false;
+            }
+
+            return token.IndexOf("HEAD", StringComparison.Ordinal) >= 0 ||
+                   token.IndexOf("NECK", StringComparison.Ordinal) >= 0 ||
+                   token.IndexOf("THROAT", StringComparison.Ordinal) >= 0;
         }
 
         public static int GetPresetSelectionHash()
         {
             int hash = 17;
             hash = CombineHash(hash, StringHash(NormalizeDamagePreset(PresetDamageModel)));
-            hash = CombineHash(hash, StringHash(NormalizeRecoveryPreset(PresetRecoveryModel)));
-            hash = CombineHash(hash, StringHash(NormalizeSquirmPreset(PresetSquirmModel)));
+            hash = CombineHash(hash, StringHash(NormalizeLimbSlowPreset(PresetLimbSlowModel)));
+            hash = CombineHash(hash, StringHash(NormalizeLastStandPreset(PresetLastStandModel)));
+            hash = CombineHash(hash, StringHash(NormalizeLastStandSlowPreset(PresetLastStandSlowModel)));
             return hash;
         }
 
         public static int GetSourceOfTruthHash()
         {
+            SourceSnapshot snapshot = CaptureSourceSnapshot();
             int hash = 17;
-            hash = CombineHash(hash, PercentHash(LeftLegThresholdDamage));
-            hash = CombineHash(hash, PercentHash(RightLegThresholdDamage));
-            hash = CombineHash(hash, PercentHash(LeftArmThresholdDamage));
-            hash = CombineHash(hash, PercentHash(RightArmThresholdDamage));
 
-            hash = CombineHash(hash, PercentHash(LeftLegDisableDurationSeconds));
-            hash = CombineHash(hash, PercentHash(RightLegDisableDurationSeconds));
-            hash = CombineHash(hash, PercentHash(LeftArmDisableDurationSeconds));
-            hash = CombineHash(hash, PercentHash(RightArmDisableDurationSeconds));
+            hash = CombineHash(hash, PercentHash(snapshot.LegsThresholdDamage));
+            hash = CombineHash(hash, PercentHash(snapshot.LegsDisableDurationSeconds));
+            hash = CombineHash(hash, PercentHash(snapshot.LegsSlowDebuffPercent));
+            hash = CombineHash(hash, snapshot.LegsSlowStacks ? 1 : 0);
 
-            hash = CombineHash(hash, PercentHash(LeftLegSquirmMultiplier));
-            hash = CombineHash(hash, PercentHash(RightLegSquirmMultiplier));
-            hash = CombineHash(hash, PercentHash(LeftArmSquirmMultiplier));
-            hash = CombineHash(hash, PercentHash(RightArmSquirmMultiplier));
+            hash = CombineHash(hash, PercentHash(snapshot.ArmsThresholdDamage));
+            hash = CombineHash(hash, PercentHash(snapshot.ArmsDisableDurationSeconds));
+            hash = CombineHash(hash, PercentHash(snapshot.ArmsSlowDebuffPercent));
+            hash = CombineHash(hash, snapshot.ArmsSlowStacks ? 1 : 0);
 
-            hash = CombineHash(hash, FallFromLegInjury ? 1 : 0);
-            hash = CombineHash(hash, LegImmobilization ? 1 : 0);
-            hash = CombineHash(hash, ArmImmobilization ? 1 : 0);
-            hash = CombineHash(hash, LastStandEnabled ? 1 : 0);
-            hash = CombineHash(hash, RecoveryClearsAccumulatedDamage ? 1 : 0);
-            hash = CombineHash(hash, RecoveryRestoresPinForces ? 1 : 0);
-            hash = CombineHash(hash, PercentHash(RecoveryDelayMultiplier));
-            hash = CombineHash(hash, PercentHash(RecoveryDamageRetainedPercent));
+            hash = CombineHash(hash, snapshot.LastStandEnabled ? 1 : 0);
+            hash = CombineHash(hash, snapshot.FallFromLegInjury ? 1 : 0);
+            hash = CombineHash(hash, snapshot.LegImmobilization ? 1 : 0);
+            hash = CombineHash(hash, snapshot.ArmImmobilization ? 1 : 0);
+            hash = CombineHash(hash, snapshot.KnockoutEnabled ? 1 : 0);
+
+            hash = CombineHash(hash, PercentHash(snapshot.RecoveryDelayMultiplier));
+            hash = CombineHash(hash, PercentHash(snapshot.RecoveryDamageReductionPercent));
+            hash = CombineHash(hash, snapshot.RecoveryRestoresPinForces ? 1 : 0);
+            hash = CombineHash(hash, PercentHash(snapshot.DeadRevivalChancePercent));
+            hash = CombineHash(hash, snapshot.MaxDeadRecoveries);
+            hash = CombineHash(hash, PercentHash(snapshot.DeadRecoverySlowPercent));
+            hash = CombineHash(hash, PercentHash(snapshot.KnockoutDurationSeconds));
+            hash = CombineHash(hash, PercentHash(snapshot.KnockoutRecoverySlowPercent));
+            hash = CombineHash(hash, snapshot.SlowDebuffsStack ? 1 : 0);
+
             return hash;
+        }
+
+        public static SourceSnapshot CaptureSourceSnapshot()
+        {
+            return new SourceSnapshot
+            {
+                LegsThresholdDamage = LegsThresholdDamage,
+                LegsDisableDurationSeconds = LegsDisableDurationSeconds,
+                LegsSlowDebuffPercent = LegsSlowDebuffPercent,
+                LegsSlowStacks = LegsSlowStacks,
+                ArmsThresholdDamage = ArmsThresholdDamage,
+                ArmsDisableDurationSeconds = ArmsDisableDurationSeconds,
+                ArmsSlowDebuffPercent = ArmsSlowDebuffPercent,
+                ArmsSlowStacks = ArmsSlowStacks,
+                LastStandEnabled = LastStandEnabled,
+                FallFromLegInjury = FallFromLegInjury,
+                LegImmobilization = LegImmobilization,
+                ArmImmobilization = ArmImmobilization,
+                KnockoutEnabled = KnockoutEnabled,
+                RecoveryDelayMultiplier = RecoveryDelayMultiplier,
+                RecoveryDamageReductionPercent = RecoveryDamageReductionPercent,
+                RecoveryRestoresPinForces = RecoveryRestoresPinForces,
+                DeadRevivalChancePercent = DeadRevivalChancePercent,
+                MaxDeadRecoveries = GetMaxDeadRecoveries(),
+                DeadRecoverySlowPercent = DeadRecoverySlowPercent,
+                KnockoutDurationSeconds = KnockoutDurationSeconds,
+                KnockoutRecoverySlowPercent = KnockoutRecoverySlowPercent,
+                SlowDebuffsStack = SlowDebuffsStack,
+            };
+        }
+
+        public static bool SourceSnapshotsEqual(SourceSnapshot left, SourceSnapshot right)
+        {
+            return Mathf.Abs(left.LegsThresholdDamage - right.LegsThresholdDamage) < 0.0001f &&
+                   Mathf.Abs(left.LegsDisableDurationSeconds - right.LegsDisableDurationSeconds) < 0.0001f &&
+                   Mathf.Abs(left.LegsSlowDebuffPercent - right.LegsSlowDebuffPercent) < 0.0001f &&
+                   left.LegsSlowStacks == right.LegsSlowStacks &&
+                   Mathf.Abs(left.ArmsThresholdDamage - right.ArmsThresholdDamage) < 0.0001f &&
+                   Mathf.Abs(left.ArmsDisableDurationSeconds - right.ArmsDisableDurationSeconds) < 0.0001f &&
+                   Mathf.Abs(left.ArmsSlowDebuffPercent - right.ArmsSlowDebuffPercent) < 0.0001f &&
+                   left.ArmsSlowStacks == right.ArmsSlowStacks &&
+                   left.LastStandEnabled == right.LastStandEnabled &&
+                   left.FallFromLegInjury == right.FallFromLegInjury &&
+                   left.LegImmobilization == right.LegImmobilization &&
+                   left.ArmImmobilization == right.ArmImmobilization &&
+                   left.KnockoutEnabled == right.KnockoutEnabled &&
+                   Mathf.Abs(left.RecoveryDelayMultiplier - right.RecoveryDelayMultiplier) < 0.0001f &&
+                   Mathf.Abs(left.RecoveryDamageReductionPercent - right.RecoveryDamageReductionPercent) < 0.0001f &&
+                   left.RecoveryRestoresPinForces == right.RecoveryRestoresPinForces &&
+                   Mathf.Abs(left.DeadRevivalChancePercent - right.DeadRevivalChancePercent) < 0.0001f &&
+                   left.MaxDeadRecoveries == right.MaxDeadRecoveries &&
+                   Mathf.Abs(left.DeadRecoverySlowPercent - right.DeadRecoverySlowPercent) < 0.0001f &&
+                   Mathf.Abs(left.KnockoutDurationSeconds - right.KnockoutDurationSeconds) < 0.0001f &&
+                   Mathf.Abs(left.KnockoutRecoverySlowPercent - right.KnockoutRecoverySlowPercent) < 0.0001f &&
+                   left.SlowDebuffsStack == right.SlowDebuffsStack;
         }
 
         public static string GetSourceOfTruthSummary()
         {
-            return "LL=" + LeftLegThresholdDamage.ToString("0") + "/" + LeftLegDisableDurationSeconds.ToString("0") + "s@" + LeftLegSquirmMultiplier.ToString("0.00") +
-                   " RL=" + RightLegThresholdDamage.ToString("0") + "/" + RightLegDisableDurationSeconds.ToString("0") + "s@" + RightLegSquirmMultiplier.ToString("0.00") +
-                   " LA=" + LeftArmThresholdDamage.ToString("0") + "/" + LeftArmDisableDurationSeconds.ToString("0") + "s@" + LeftArmSquirmMultiplier.ToString("0.00") +
-                   " RA=" + RightArmThresholdDamage.ToString("0") + "/" + RightArmDisableDurationSeconds.ToString("0") + "s@" + RightArmSquirmMultiplier.ToString("0.00") +
+            return "legs=" + LegsThresholdDamage.ToString("0") + "/" + LegsDisableDurationSeconds.ToString("0") + "s slow=" + LegsSlowDebuffPercent.ToString("0") + "% stack=" + LegsSlowStacks +
+                   " arms=" + ArmsThresholdDamage.ToString("0") + "/" + ArmsDisableDurationSeconds.ToString("0") + "s slow=" + ArmsSlowDebuffPercent.ToString("0") + "% stack=" + ArmsSlowStacks +
                    " lastStand=" + LastStandEnabled +
-                   " delay=" + RecoveryDelayMultiplier.ToString("0.00") + "x";
+                   " delay=" + RecoveryDelayMultiplier.ToString("0.00") + "x" +
+                   " recover=" + RecoveryDamageReductionPercent.ToString("0") + "%" +
+                   " deadChance=" + DeadRevivalChancePercent.ToString("0") + "%" +
+                   " maxRecoveries=" + GetMaxDeadRecoveries() +
+                   " deadSlow=" + DeadRecoverySlowPercent.ToString("0") + "%" +
+                   " koDur=" + KnockoutDurationSeconds.ToString("0") + "s" +
+                   " koSlow=" + KnockoutRecoverySlowPercent.ToString("0") + "%" +
+                   " slowStack=" + SlowDebuffsStack;
         }
 
         public static string NormalizeDamagePreset(string preset)
         {
             string token = NormalizeToken(preset);
-            if (token.Contains("FORGIVE") || token.Contains("LIGHT")) return PresetDamageForgiving;
-            if (token.Contains("TACTIC")) return PresetDamageTactical;
+            if (token.Contains("LENIENT") || token.Contains("LIGHT")) return PresetDamageLenient;
+            if (token.Contains("SEVERE") || token.Contains("TACTIC")) return PresetDamageSevere;
             if (token.Contains("BRUTAL") || token.Contains("HARD")) return PresetDamageBrutal;
-            if (token.Contains("SEVER") || token.Contains("EXTREME")) return PresetDamageSevered;
-            return PresetDamageDefaultPlus;
+            if (token.Contains("EXTREME") || token.Contains("SEVER")) return PresetDamageExtreme;
+            return PresetDamageDefault;
         }
 
-        public static string NormalizeRecoveryPreset(string preset)
+        public static string NormalizeLimbSlowPreset(string preset)
         {
             string token = NormalizeToken(preset);
-            if (token.Contains("DISABLE") || token.Contains("OFF")) return PresetRecoveryDisabled;
-            if (token.Contains("QUICK") || token.Contains("FAST")) return PresetRecoveryQuick;
-            if (token.Contains("SLOW")) return PresetRecoverySlow;
-            if (token.Contains("COMEBACK") || token.Contains("RETENTION")) return PresetRecoveryComeback;
-            return PresetRecoveryDefault;
+            if (token.Contains("LOW") || token.Contains("LIGHT")) return PresetLimbSlowLow;
+            if (token.Contains("HIGH") || token.Contains("HEAVY")) return PresetLimbSlowHigh;
+            return PresetLimbSlowDefault;
         }
 
-        public static string NormalizeSquirmPreset(string preset)
+        public static string NormalizeLastStandPreset(string preset)
         {
             string token = NormalizeToken(preset);
-            if (token.Contains("LOCK")) return PresetSquirmLocked;
-            if (token.Contains("TIGHT")) return PresetSquirmTight;
-            if (token.Contains("LOOSE")) return PresetSquirmLoose;
-            if (token.Contains("WILD")) return PresetSquirmWild;
-            return PresetSquirmStandard;
+            if (token.Contains("OFF") || token.Contains("DISABLE")) return PresetLastStandOffLegacy;
+            if (token.Contains("LESS") || token.Contains("LIGHT")) return PresetLastStandLess;
+            if (token.Contains("MORE") || token.Contains("HIGH") || token.Contains("AGGRESSIVE")) return PresetLastStandMore;
+            return PresetLastStandDefault;
         }
 
-        private static void ResolveDamagePreset(
-            string preset,
-            out float leftLegThreshold,
-            out float rightLegThreshold,
-            out float leftArmThreshold,
-            out float rightArmThreshold,
-            out float leftLegDuration,
-            out float rightLegDuration,
-            out float leftArmDuration,
-            out float rightArmDuration)
+        public static string NormalizeLastStandSlowPreset(string preset)
         {
-            leftLegThreshold = 22f;
-            rightLegThreshold = 22f;
-            leftArmThreshold = 26f;
-            rightArmThreshold = 26f;
-            leftLegDuration = 14f;
-            rightLegDuration = 14f;
-            leftArmDuration = 10f;
-            rightArmDuration = 10f;
+            string token = NormalizeToken(preset);
+            if (token.Contains("LIGHT") || token.Contains("LOW")) return PresetLastStandSlowLight;
+            if (token.Contains("HEAVY") || token.Contains("HIGH")) return PresetLastStandSlowHeavy;
+            if (token.Contains("EXTREME") || token.Contains("MAX")) return PresetLastStandSlowExtreme;
+            return PresetLastStandSlowDefault;
+        }
+
+        private static void ResolveDamagePreset(string preset, out float legsThreshold, out float armsThreshold, out float legsDuration, out float armsDuration)
+        {
+            legsThreshold = 22f;
+            armsThreshold = 26f;
+            legsDuration = 14f;
+            armsDuration = 10f;
 
             switch (preset)
             {
-                case PresetDamageForgiving:
-                    leftLegThreshold = 30f;
-                    rightLegThreshold = 30f;
-                    leftArmThreshold = 35f;
-                    rightArmThreshold = 35f;
-                    leftLegDuration = 8f;
-                    rightLegDuration = 8f;
-                    leftArmDuration = 6f;
-                    rightArmDuration = 6f;
+                case PresetDamageLenient:
+                    legsThreshold = 30f;
+                    armsThreshold = 35f;
+                    legsDuration = 8f;
+                    armsDuration = 6f;
                     break;
-                case PresetDamageTactical:
-                    leftLegThreshold = 18f;
-                    rightLegThreshold = 18f;
-                    leftArmThreshold = 22f;
-                    rightArmThreshold = 22f;
-                    leftLegDuration = 16f;
-                    rightLegDuration = 16f;
-                    leftArmDuration = 12f;
-                    rightArmDuration = 12f;
+                case PresetDamageSevere:
+                    legsThreshold = 18f;
+                    armsThreshold = 22f;
+                    legsDuration = 18f;
+                    armsDuration = 14f;
                     break;
                 case PresetDamageBrutal:
-                    leftLegThreshold = 14f;
-                    rightLegThreshold = 14f;
-                    leftArmThreshold = 16f;
-                    rightArmThreshold = 16f;
-                    leftLegDuration = 25f;
-                    rightLegDuration = 25f;
-                    leftArmDuration = 20f;
-                    rightArmDuration = 20f;
+                    legsThreshold = 14f;
+                    armsThreshold = 16f;
+                    legsDuration = 30f;
+                    armsDuration = 24f;
                     break;
-                case PresetDamageSevered:
-                    leftLegThreshold = 10f;
-                    rightLegThreshold = 10f;
-                    leftArmThreshold = 12f;
-                    rightArmThreshold = 12f;
-                    leftLegDuration = 40f;
-                    rightLegDuration = 40f;
-                    leftArmDuration = 30f;
-                    rightArmDuration = 30f;
+                case PresetDamageExtreme:
+                    legsThreshold = 10f;
+                    armsThreshold = 12f;
+                    legsDuration = 45f;
+                    armsDuration = 36f;
                     break;
             }
         }
 
-        private static void ResolveRecoveryPreset(
-            string preset,
-            out bool enabled,
-            out float delayMultiplier,
-            out bool clearsDamage,
-            out float retainedDamage,
-            out bool restorePins)
+        private static void ResolveLimbSlowPreset(string preset, out float legsSlow, out float armsSlow, out bool legsSlowStacks, out bool armsSlowStacks)
         {
-            enabled = true;
-            delayMultiplier = 1.0f;
-            clearsDamage = true;
-            retainedDamage = 35f;
+            switch (preset)
+            {
+                case PresetLimbSlowLow:
+                    legsSlow = 5f;
+                    armsSlow = 3f;
+                    legsSlowStacks = false;
+                    armsSlowStacks = false;
+                    break;
+                case PresetLimbSlowHigh:
+                    legsSlow = 20f;
+                    armsSlow = 10f;
+                    legsSlowStacks = true;
+                    armsSlowStacks = true;
+                    break;
+                default:
+                    legsSlow = 10f;
+                    armsSlow = 5f;
+                    legsSlowStacks = true;
+                    armsSlowStacks = true;
+                    break;
+            }
+        }
+
+        private static void ResolveLastStandPreset(
+            string preset,
+            out float recoveryDelay,
+            out float recoveryReduction,
+            out bool restorePins,
+            out float deadChance,
+            out int maxRecoveries,
+            out float deadSlow,
+            out float knockoutDuration,
+            out float knockoutSlow,
+            out bool? forceLastStandEnabled)
+        {
+            recoveryDelay = 1.00f;
+            recoveryReduction = 40f;
             restorePins = true;
+            deadChance = 10f;
+            maxRecoveries = 2;
+            deadSlow = 60f;
+            knockoutDuration = 8f;
+            knockoutSlow = 40f;
+            forceLastStandEnabled = true;
 
             switch (preset)
             {
-                case PresetRecoveryDisabled:
-                    enabled = false;
-                    clearsDamage = false;
-                    retainedDamage = 100f;
-                    restorePins = false;
+                case PresetLastStandOffLegacy:
+                    forceLastStandEnabled = false;
+                    deadChance = 0f;
+                    maxRecoveries = 0;
                     break;
-                case PresetRecoveryQuick:
-                    delayMultiplier = 0.60f;
-                    retainedDamage = 10f;
+                case PresetLastStandLess:
+                    recoveryDelay = 1.30f;
+                    recoveryReduction = 30f;
+                    deadChance = 10f;
+                    maxRecoveries = 1;
+                    deadSlow = 55f;
+                    knockoutDuration = 6f;
+                    knockoutSlow = 30f;
                     break;
-                case PresetRecoverySlow:
-                    delayMultiplier = 1.80f;
-                    retainedDamage = 20f;
-                    break;
-                case PresetRecoveryComeback:
-                    delayMultiplier = 0.40f;
-                    clearsDamage = false;
-                    retainedDamage = 60f;
+                case PresetLastStandMore:
+                    recoveryDelay = 0.75f;
+                    recoveryReduction = 50f;
+                    deadChance = 30f;
+                    maxRecoveries = 4;
+                    deadSlow = 65f;
+                    knockoutDuration = 12f;
+                    knockoutSlow = 50f;
                     break;
             }
         }
 
-        private static void ResolveSquirmPreset(
-            string preset,
-            out float leftLegSquirm,
-            out float rightLegSquirm,
-            out float leftArmSquirm,
-            out float rightArmSquirm)
+        private static void ResolveLastStandSlowPreset(string preset, out float knockoutSlow, out float deadSlow, out bool stackDebuffs)
         {
-            float shared = 0.20f;
             switch (preset)
             {
-                case PresetSquirmLocked:
-                    shared = 0.00f;
+                case PresetLastStandSlowLight:
+                    knockoutSlow = 20f;
+                    deadSlow = 35f;
+                    stackDebuffs = false;
                     break;
-                case PresetSquirmTight:
-                    shared = 0.10f;
+                case PresetLastStandSlowHeavy:
+                    knockoutSlow = 55f;
+                    deadSlow = 70f;
+                    stackDebuffs = true;
                     break;
-                case PresetSquirmLoose:
-                    shared = 0.40f;
+                case PresetLastStandSlowExtreme:
+                    knockoutSlow = 70f;
+                    deadSlow = 85f;
+                    stackDebuffs = true;
                     break;
-                case PresetSquirmWild:
-                    shared = 0.65f;
+                default:
+                    knockoutSlow = 40f;
+                    deadSlow = 60f;
+                    stackDebuffs = true;
                     break;
             }
+        }
 
-            leftLegSquirm = shared;
-            rightLegSquirm = shared;
-            leftArmSquirm = shared;
-            rightArmSquirm = shared;
+        public static float GetDeadRevivalSpeedMultiplier()
+        {
+            return Mathf.Clamp(1f - GetDeadRecoverySlowDebuffRatio(), 0f, 1f);
+        }
+
+        private static bool IsLegType(RagdollPart.Type limbType)
+        {
+            switch (limbType)
+            {
+                case RagdollPart.Type.LeftLeg:
+                case RagdollPart.Type.LeftFoot:
+                case RagdollPart.Type.RightLeg:
+                case RagdollPart.Type.RightFoot:
+                case RagdollPart.Type.Tail:
+                    return true;
+                default:
+                    return false;
+            }
+        }
+
+        private static string BuildPartToken(RagdollPart part)
+        {
+            if (part == null)
+            {
+                return string.Empty;
+            }
+
+            string token = string.Empty;
+            if (!string.IsNullOrWhiteSpace(part.name))
+            {
+                token = part.name;
+            }
+
+            if (part.transform != null && !string.IsNullOrWhiteSpace(part.transform.name))
+            {
+                token += "|" + part.transform.name;
+            }
+
+            if (part.bone != null && part.bone.animation != null && !string.IsNullOrWhiteSpace(part.bone.animation.name))
+            {
+                token += "|" + part.bone.animation.name;
+            }
+
+            return token.ToUpperInvariant();
         }
 
         private static bool SetBool(ref bool field, bool value)
