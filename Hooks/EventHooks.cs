@@ -11,6 +11,7 @@ namespace EnemyLimbDamageManager.Hooks
         private bool subscribed;
         private EventManager.CreatureSpawnedEvent onCreatureSpawnHandler;
         private EventManager.CreatureHitEvent onCreatureHitHandler;
+        private EventManager.CreatureKillEvent onCreatureKillHandler;
         private EventManager.CreatureDespawnedEvent onCreatureDespawnHandler;
         private EventManager.LevelLoadEvent onLevelUnloadHandler;
 
@@ -40,11 +41,13 @@ namespace EnemyLimbDamageManager.Hooks
             {
                 onCreatureSpawnHandler = OnCreatureSpawn;
                 onCreatureHitHandler = OnCreatureHit;
+                onCreatureKillHandler = OnCreatureKill;
                 onCreatureDespawnHandler = OnCreatureDespawn;
                 onLevelUnloadHandler = OnLevelUnload;
 
                 EventManager.onCreatureSpawn += onCreatureSpawnHandler;
                 EventManager.onCreatureHit += onCreatureHitHandler;
+                EventManager.onCreatureKill += onCreatureKillHandler;
                 EventManager.onCreatureDespawn += onCreatureDespawnHandler;
                 EventManager.onLevelUnload += onLevelUnloadHandler;
 
@@ -74,6 +77,10 @@ namespace EnemyLimbDamageManager.Hooks
                 {
                     EventManager.onCreatureHit -= onCreatureHitHandler;
                 }
+                if (onCreatureKillHandler != null)
+                {
+                    EventManager.onCreatureKill -= onCreatureKillHandler;
+                }
                 if (onCreatureDespawnHandler != null)
                 {
                     EventManager.onCreatureDespawn -= onCreatureDespawnHandler;
@@ -90,6 +97,7 @@ namespace EnemyLimbDamageManager.Hooks
 
             onCreatureSpawnHandler = null;
             onCreatureHitHandler = null;
+            onCreatureKillHandler = null;
             onCreatureDespawnHandler = null;
             onLevelUnloadHandler = null;
             subscribed = false;
@@ -103,6 +111,11 @@ namespace EnemyLimbDamageManager.Hooks
         private void OnCreatureHit(Creature creature, CollisionInstance collisionInstance, EventTime eventTime)
         {
             EnemyLimbManager.Instance.OnCreatureHit(creature, collisionInstance, eventTime);
+        }
+
+        private void OnCreatureKill(Creature creature, Player player, CollisionInstance collisionInstance, EventTime eventTime)
+        {
+            EnemyLimbManager.Instance.OnCreatureKill(creature, player, collisionInstance, eventTime);
         }
 
         private void OnCreatureDespawn(Creature creature, EventTime eventTime)

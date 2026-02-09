@@ -11,7 +11,7 @@ namespace EnemyLimbDamageManager.Core
     {
         private const string OptionKeySeparator = "||";
         private const float UpdateIntervalSeconds = 0.15f;
-        private const float StartupOverwriteWatchSeconds = 8f;
+        private const float StartupOverwriteWatchSeconds = 4f;
 
         public static ELDMModOptionSync Instance { get; } = new ELDMModOptionSync();
 
@@ -25,6 +25,11 @@ namespace EnemyLimbDamageManager.Core
         private bool startupOverwriteWatchActive;
         private float startupOverwriteWatchEndTime;
 
+        private bool applyingPresetBatch;
+        private bool snapshotInitialized;
+        private ELDMModOptions.SourceSnapshot lastSnapshot;
+        private bool manualSourceOverrideActive;
+
         private ELDMModOptionSync()
         {
         }
@@ -37,6 +42,10 @@ namespace EnemyLimbDamageManager.Core
             startupSourceOfTruthHash = int.MinValue;
             startupOverwriteWatchActive = false;
             startupOverwriteWatchEndTime = 0f;
+            applyingPresetBatch = false;
+            snapshotInitialized = false;
+            lastSnapshot = default(ELDMModOptions.SourceSnapshot);
+            manualSourceOverrideActive = false;
             modData = null;
             modOptionsByKey.Clear();
 
@@ -46,7 +55,10 @@ namespace EnemyLimbDamageManager.Core
                 return;
             }
 
-            bool changed = ApplyPresetsIfChanged(force: true);
+            lastSnapshot = ELDMModOptions.CaptureSourceSnapshot();
+            snapshotInitialized = true;
+
+            bool changed = ApplyPresetsIfChanged(force: true, source: "preset");
             if (changed)
             {
                 ModManager.RefreshModOptionsUI();
@@ -67,6 +79,10 @@ namespace EnemyLimbDamageManager.Core
             startupSourceOfTruthHash = int.MinValue;
             startupOverwriteWatchActive = false;
             startupOverwriteWatchEndTime = 0f;
+            applyingPresetBatch = false;
+            snapshotInitialized = false;
+            lastSnapshot = default(ELDMModOptions.SourceSnapshot);
+            manualSourceOverrideActive = false;
         }
 
         public void Update()
@@ -79,7 +95,10 @@ namespace EnemyLimbDamageManager.Core
                     return;
                 }
 
-                bool initChanged = ApplyPresetsIfChanged(force: true);
+                lastSnapshot = ELDMModOptions.CaptureSourceSnapshot();
+                snapshotInitialized = true;
+
+                bool initChanged = ApplyPresetsIfChanged(force: true, source: "preset");
                 if (initChanged)
                 {
                     ModManager.RefreshModOptionsUI();
@@ -94,9 +113,12 @@ namespace EnemyLimbDamageManager.Core
             }
 
             nextUpdateTime = now + UpdateIntervalSeconds;
+
+            DetectManualSourceEdits(now);
+
             bool changed = false;
             changed |= ReapplyPresetsIfStartupOverwriteDetected(now);
-            changed |= ApplyPresetsIfChanged(force: false);
+            changed |= ApplyPresetsIfChanged(force: false, source: "preset");
 
             if (changed)
             {
@@ -104,6 +126,28 @@ namespace EnemyLimbDamageManager.Core
             }
         }
 
+        private void DetectManualSourceEdits(float now)
+        {
+            if (!snapshotInitialized || applyingPresetBatch)
+            {
+                return;
+            }
+
+            ELDMModOptions.SourceSnapshot current = ELDMModOptions.CaptureSourceSnapshot();
+            if (ELDMModOptions.SourceSnapshotsEqual(lastSnapshot, current))
+            {
+                return;
+            }
+
+            bool withinStartupWatch = startupOverwriteWatchActive && now <= startupOverwriteWatchEndTime;
+            if (!withinStartupWatch)
+            {
+                manualSourceOverrideActive = true;
+                LogSnapshotDiff(lastSnapshot, current, "user");
+            }
+
+            lastSnapshot = current;
+        }
         private bool ReapplyPresetsIfStartupOverwriteDetected(float now)
         {
             if (!startupOverwriteWatchActive)
@@ -123,7 +167,7 @@ namespace EnemyLimbDamageManager.Core
                 return false;
             }
 
-            bool changed = ApplyPresetsIfChanged(force: true);
+            bool changed = ApplyPresetsIfChanged(force: true, source: "startup_reapply");
             startupSourceOfTruthHash = ELDMModOptions.GetSourceOfTruthHash();
             startupOverwriteWatchActive = false;
 
@@ -152,28 +196,65 @@ namespace EnemyLimbDamageManager.Core
             initialized = true;
         }
 
-        private bool ApplyPresetsIfChanged(bool force)
+        private bool ApplyPresetsIfChanged(bool force, string source)
         {
             int presetHash = ELDMModOptions.GetPresetSelectionHash();
-            if (!force && presetHash == lastPresetHash)
+            if (!force)
             {
-                return false;
+                if (manualSourceOverrideActive && presetHash == lastPresetHash)
+                {
+                    return false;
+                }
+
+                if (presetHash == lastPresetHash)
+                {
+                    return false;
+                }
+            }
+
+            if (!force && manualSourceOverrideActive && presetHash != lastPresetHash)
+            {
+                manualSourceOverrideActive = false;
+                ELDMLog.Info("manual_override_cleared reason=preset_changed");
             }
 
             string damagePreset = ELDMModOptions.NormalizeDamagePreset(ELDMModOptions.PresetDamageModel);
-            string recoveryPreset = ELDMModOptions.NormalizeRecoveryPreset(ELDMModOptions.PresetRecoveryModel);
-            string squirmPreset = ELDMModOptions.NormalizeSquirmPreset(ELDMModOptions.PresetSquirmModel);
+            string limbSlowPreset = ELDMModOptions.NormalizeLimbSlowPreset(ELDMModOptions.PresetLimbSlowModel);
+            string lastStandPreset = ELDMModOptions.NormalizeLastStandPreset(ELDMModOptions.PresetLastStandModel);
+            string lastStandSlowPreset = ELDMModOptions.NormalizeLastStandSlowPreset(ELDMModOptions.PresetLastStandSlowModel);
 
-            bool valuesChanged = ELDMModOptions.ApplySelectedPresets();
-            bool uiChanged = SyncSourceOfTruthOptions();
+            ELDMModOptions.SourceSnapshot before = ELDMModOptions.CaptureSourceSnapshot();
+
+            applyingPresetBatch = true;
+            bool valuesChanged;
+            bool uiChanged;
+            try
+            {
+                valuesChanged = ELDMModOptions.ApplySelectedPresets();
+                uiChanged = SyncSourceOfTruthOptions();
+            }
+            finally
+            {
+                applyingPresetBatch = false;
+            }
+
+            ELDMModOptions.SourceSnapshot after = ELDMModOptions.CaptureSourceSnapshot();
+            if (!ELDMModOptions.SourceSnapshotsEqual(before, after))
+            {
+                LogSnapshotDiff(before, after, source);
+            }
+
+            lastSnapshot = after;
+            snapshotInitialized = true;
             lastPresetHash = ELDMModOptions.GetPresetSelectionHash();
 
             if (force || valuesChanged || uiChanged)
             {
                 ELDMLog.Info(
                     "Preset batch wrote source-of-truth collapsibles: damage=" + damagePreset +
-                    " recovery=" + recoveryPreset +
-                    " squirm=" + squirmPreset +
+                    " limbSlow=" + limbSlowPreset +
+                    " lastStand=" + lastStandPreset +
+                    " lastStandSlow=" + lastStandSlowPreset +
                     " valuesChanged=" + valuesChanged +
                     " uiSynced=" + uiChanged +
                     " snapshot={" + ELDMModOptions.GetSourceOfTruthSummary() + "}",
@@ -187,35 +268,34 @@ namespace EnemyLimbDamageManager.Core
         {
             bool changed = false;
 
-            changed |= SyncFloatOption(ELDMModOptions.CategoryLeftLeg, ELDMModOptions.OptionLeftLegThreshold, ELDMModOptions.LeftLegThresholdDamage);
-            changed |= SyncFloatOption(ELDMModOptions.CategoryLeftLeg, ELDMModOptions.OptionLeftLegDisableDuration, ELDMModOptions.LeftLegDisableDurationSeconds);
-            changed |= SyncFloatOption(ELDMModOptions.CategoryLeftLeg, ELDMModOptions.OptionLeftLegSquirmMultiplier, ELDMModOptions.LeftLegSquirmMultiplier);
+            changed |= SyncFloatOption(ELDMModOptions.CategoryLegs, ELDMModOptions.OptionLegThreshold, ELDMModOptions.LegsThresholdDamage);
+            changed |= SyncFloatOption(ELDMModOptions.CategoryLegs, ELDMModOptions.OptionLegDisableDuration, ELDMModOptions.LegsDisableDurationSeconds);
+            changed |= SyncFloatOption(ELDMModOptions.CategoryLegs, ELDMModOptions.OptionLegSlowDebuffPercent, ELDMModOptions.LegsSlowDebuffPercent);
+            changed |= SyncBoolOption(ELDMModOptions.CategoryLegs, ELDMModOptions.OptionLegSlowStacks, ELDMModOptions.LegsSlowStacks);
 
-            changed |= SyncFloatOption(ELDMModOptions.CategoryRightLeg, ELDMModOptions.OptionRightLegThreshold, ELDMModOptions.RightLegThresholdDamage);
-            changed |= SyncFloatOption(ELDMModOptions.CategoryRightLeg, ELDMModOptions.OptionRightLegDisableDuration, ELDMModOptions.RightLegDisableDurationSeconds);
-            changed |= SyncFloatOption(ELDMModOptions.CategoryRightLeg, ELDMModOptions.OptionRightLegSquirmMultiplier, ELDMModOptions.RightLegSquirmMultiplier);
-
-            changed |= SyncFloatOption(ELDMModOptions.CategoryLeftArm, ELDMModOptions.OptionLeftArmThreshold, ELDMModOptions.LeftArmThresholdDamage);
-            changed |= SyncFloatOption(ELDMModOptions.CategoryLeftArm, ELDMModOptions.OptionLeftArmDisableDuration, ELDMModOptions.LeftArmDisableDurationSeconds);
-            changed |= SyncFloatOption(ELDMModOptions.CategoryLeftArm, ELDMModOptions.OptionLeftArmSquirmMultiplier, ELDMModOptions.LeftArmSquirmMultiplier);
-
-            changed |= SyncFloatOption(ELDMModOptions.CategoryRightArm, ELDMModOptions.OptionRightArmThreshold, ELDMModOptions.RightArmThresholdDamage);
-            changed |= SyncFloatOption(ELDMModOptions.CategoryRightArm, ELDMModOptions.OptionRightArmDisableDuration, ELDMModOptions.RightArmDisableDurationSeconds);
-            changed |= SyncFloatOption(ELDMModOptions.CategoryRightArm, ELDMModOptions.OptionRightArmSquirmMultiplier, ELDMModOptions.RightArmSquirmMultiplier);
+            changed |= SyncFloatOption(ELDMModOptions.CategoryArms, ELDMModOptions.OptionArmThreshold, ELDMModOptions.ArmsThresholdDamage);
+            changed |= SyncFloatOption(ELDMModOptions.CategoryArms, ELDMModOptions.OptionArmDisableDuration, ELDMModOptions.ArmsDisableDurationSeconds);
+            changed |= SyncFloatOption(ELDMModOptions.CategoryArms, ELDMModOptions.OptionArmSlowDebuffPercent, ELDMModOptions.ArmsSlowDebuffPercent);
+            changed |= SyncBoolOption(ELDMModOptions.CategoryArms, ELDMModOptions.OptionArmSlowStacks, ELDMModOptions.ArmsSlowStacks);
 
             changed |= SyncFloatOption(ELDMModOptions.CategoryLastStand, ELDMModOptions.OptionRecoveryDelayMultiplier, ELDMModOptions.RecoveryDelayMultiplier);
-            changed |= SyncFloatOption(ELDMModOptions.CategoryLastStand, ELDMModOptions.OptionRecoveryDamageRetainedPercent, ELDMModOptions.RecoveryDamageRetainedPercent);
+            changed |= SyncFloatOption(ELDMModOptions.CategoryLastStand, ELDMModOptions.OptionRecoveryDamageReductionPercent, ELDMModOptions.RecoveryDamageReductionPercent);
+            changed |= SyncBoolOption(ELDMModOptions.CategoryLastStand, ELDMModOptions.OptionRecoveryRestoresPinForces, ELDMModOptions.RecoveryRestoresPinForces);
+            changed |= SyncFloatOption(ELDMModOptions.CategoryLastStand, ELDMModOptions.OptionDeadRevivalChancePercent, ELDMModOptions.DeadRevivalChancePercent);
+            changed |= SyncFloatOption(ELDMModOptions.CategoryLastStand, ELDMModOptions.OptionMaxDeadRecoveries, ELDMModOptions.MaxDeadRecoveriesValue);
+            changed |= SyncFloatOption(ELDMModOptions.CategoryLastStand, ELDMModOptions.OptionDeadRecoverySlowPercent, ELDMModOptions.DeadRecoverySlowPercent);
+            changed |= SyncFloatOption(ELDMModOptions.CategoryLastStand, ELDMModOptions.OptionKnockoutDurationSeconds, ELDMModOptions.KnockoutDurationSeconds);
+            changed |= SyncFloatOption(ELDMModOptions.CategoryLastStand, ELDMModOptions.OptionKnockoutRecoverySlowPercent, ELDMModOptions.KnockoutRecoverySlowPercent);
+            changed |= SyncBoolOption(ELDMModOptions.CategoryLastStand, ELDMModOptions.OptionSlowDebuffsStack, ELDMModOptions.SlowDebuffsStack);
 
             changed |= SyncBoolOption(ELDMModOptions.CategoryOptional, ELDMModOptions.OptionFallFromLegInjury, ELDMModOptions.FallFromLegInjury);
             changed |= SyncBoolOption(ELDMModOptions.CategoryOptional, ELDMModOptions.OptionLegImmobilization, ELDMModOptions.LegImmobilization);
             changed |= SyncBoolOption(ELDMModOptions.CategoryOptional, ELDMModOptions.OptionArmImmobilization, ELDMModOptions.ArmImmobilization);
             changed |= SyncBoolOption(ELDMModOptions.CategoryOptional, ELDMModOptions.OptionLastStandEnabled, ELDMModOptions.LastStandEnabled);
-            changed |= SyncBoolOption(ELDMModOptions.CategoryOptional, ELDMModOptions.OptionRecoveryClearsAccumulatedDamage, ELDMModOptions.RecoveryClearsAccumulatedDamage);
-            changed |= SyncBoolOption(ELDMModOptions.CategoryOptional, ELDMModOptions.OptionRecoveryRestoresPinForces, ELDMModOptions.RecoveryRestoresPinForces);
+            changed |= SyncBoolOption(ELDMModOptions.CategoryOptional, ELDMModOptions.OptionKnockoutEnabled, ELDMModOptions.KnockoutEnabled);
 
             return changed;
         }
-
         private bool SyncBoolOption(string category, string optionName, bool value)
         {
             if (!TryGetOption(category, optionName, out ModOption option))
@@ -330,24 +410,83 @@ namespace EnemyLimbDamageManager.Core
                 return -1;
             }
 
+            int bestIndex = -1;
+            float bestDelta = float.MaxValue;
+
             for (int i = 0; i < parameters.Length; i++)
             {
                 object parameterValue = parameters[i]?.value;
-                if (parameterValue is float f && Mathf.Abs(f - value) < 0.0001f)
+                if (parameterValue is float f)
                 {
-                    return i;
-                }
-                if (parameterValue is double d && Mathf.Abs((float)d - value) < 0.0001f)
-                {
-                    return i;
-                }
-                if (parameterValue is int n && Mathf.Abs(n - value) < 0.0001f)
-                {
-                    return i;
+                    float delta = Mathf.Abs(f - value);
+                    if (delta < 0.0001f)
+                    {
+                        return i;
+                    }
+
+                    if (delta < bestDelta)
+                    {
+                        bestDelta = delta;
+                        bestIndex = i;
+                    }
                 }
             }
 
-            return -1;
+            return bestIndex;
+        }
+
+        private static void LogSnapshotDiff(ELDMModOptions.SourceSnapshot before, ELDMModOptions.SourceSnapshot after, string source)
+        {
+            LogFloatDiff(source, "legs.threshold", before.LegsThresholdDamage, after.LegsThresholdDamage);
+            LogFloatDiff(source, "legs.duration", before.LegsDisableDurationSeconds, after.LegsDisableDurationSeconds);
+            LogFloatDiff(source, "legs.slowDebuff", before.LegsSlowDebuffPercent, after.LegsSlowDebuffPercent);
+            LogBoolDiff(source, "legs.slowStacks", before.LegsSlowStacks, after.LegsSlowStacks);
+            LogFloatDiff(source, "arms.threshold", before.ArmsThresholdDamage, after.ArmsThresholdDamage);
+            LogFloatDiff(source, "arms.duration", before.ArmsDisableDurationSeconds, after.ArmsDisableDurationSeconds);
+            LogFloatDiff(source, "arms.slowDebuff", before.ArmsSlowDebuffPercent, after.ArmsSlowDebuffPercent);
+            LogBoolDiff(source, "arms.slowStacks", before.ArmsSlowStacks, after.ArmsSlowStacks);
+            LogBoolDiff(source, "optional.lastStand", before.LastStandEnabled, after.LastStandEnabled);
+            LogBoolDiff(source, "optional.fallFromLegInjury", before.FallFromLegInjury, after.FallFromLegInjury);
+            LogBoolDiff(source, "optional.legImmobilization", before.LegImmobilization, after.LegImmobilization);
+            LogBoolDiff(source, "optional.armImmobilization", before.ArmImmobilization, after.ArmImmobilization);
+            LogFloatDiff(source, "lastStand.delay", before.RecoveryDelayMultiplier, after.RecoveryDelayMultiplier);
+            LogFloatDiff(source, "lastStand.recoveryPercent", before.RecoveryDamageReductionPercent, after.RecoveryDamageReductionPercent);
+            LogBoolDiff(source, "lastStand.restorePins", before.RecoveryRestoresPinForces, after.RecoveryRestoresPinForces);
+            LogFloatDiff(source, "lastStand.deadChance", before.DeadRevivalChancePercent, after.DeadRevivalChancePercent);
+            LogFloatDiff(source, "lastStand.maxDeadRecoveries", before.MaxDeadRecoveries, after.MaxDeadRecoveries);
+            LogFloatDiff(source, "lastStand.deadRecoverySlow", before.DeadRecoverySlowPercent, after.DeadRecoverySlowPercent);
+            LogFloatDiff(source, "lastStand.knockoutDuration", before.KnockoutDurationSeconds, after.KnockoutDurationSeconds);
+            LogFloatDiff(source, "lastStand.knockoutRecoverySlow", before.KnockoutRecoverySlowPercent, after.KnockoutRecoverySlowPercent);
+            LogBoolDiff(source, "lastStand.slowDebuffsStack", before.SlowDebuffsStack, after.SlowDebuffsStack);
+            LogBoolDiff(source, "optional.knockout", before.KnockoutEnabled, after.KnockoutEnabled);
+        }
+
+        private static void LogFloatDiff(string source, string optionKey, float before, float after)
+        {
+            if (Mathf.Abs(before - after) < 0.0001f)
+            {
+                return;
+            }
+
+            ELDMLog.Info(
+                "option_changed source=" + source +
+                " option=" + optionKey +
+                " old=" + before.ToString("0.###") +
+                " new=" + after.ToString("0.###"));
+        }
+
+        private static void LogBoolDiff(string source, string optionKey, bool before, bool after)
+        {
+            if (before == after)
+            {
+                return;
+            }
+
+            ELDMLog.Info(
+                "option_changed source=" + source +
+                " option=" + optionKey +
+                " old=" + before +
+                " new=" + after);
         }
     }
 }
