@@ -1,6 +1,6 @@
 {
-  "Name": "Enemy Limb Damage Manager",
-  "Description": "Disables enemy limbs when limb damage thresholds are reached, with configurable last-stand recovery.",
+  "Name": "Ultimate Injury Overhaul (UIO)",
+  "Description": "Ultimate Injury Overhaul with limb injury, knockout, death-mimic, and synchronized death-audio systems.",
   "Author": "dkatz",
   "ModVersion": "0.1.0",
   "GameVersion": "1.0.0.0"

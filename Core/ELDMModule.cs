@@ -13,8 +13,9 @@ namespace EnemyLimbDamageManager.Core
 
             try
             {
-                ELDMLog.Info("Enemy Limb Damage Manager v" + ELDMModOptions.VERSION + " enabled.");
+                ELDMLog.Info("Ultimate Injury Overhaul (UIO) v" + ELDMModOptions.VERSION + " enabled.");
                 ELDMTelemetry.Initialize();
+                ELDMSoundManager.Instance.Initialize();
                 ELDMModOptionSync.Instance.Initialize();
                 EnemyLimbManager.Instance.Initialize();
                 Hooks.EventHooks.Subscribe();
@@ -48,8 +49,9 @@ namespace EnemyLimbDamageManager.Core
                 Hooks.EventHooks.Unsubscribe();
                 EnemyLimbManager.Instance.Shutdown();
                 ELDMModOptionSync.Instance.Shutdown();
+                ELDMSoundManager.Instance.Shutdown();
                 ELDMTelemetry.Shutdown();
-                ELDMLog.Info("Enemy Limb Damage Manager disabled.");
+                ELDMLog.Info("Ultimate Injury Overhaul (UIO) disabled.");
             }
             catch (Exception ex)
             {

@@ -1,7 +1,7 @@
-# Enemy Limb Damage Manager
+# Ultimate Injury Overhaul (UIO)
 
-Enemy Limb Damage Manager disables individual enemy limbs when enough damage is dealt to that limb.  
-Each limb recovers through a configurable Last Stand timer that is enabled by default.
+Ultimate Injury Overhaul disables individual enemy limbs when enough damage is dealt to that limb.  
+Each limb can recover through configurable Last Stand logic, with knockout and death-mimic behavior.
 
 ## Menu model
 
@@ -19,6 +19,6 @@ Each limb recovers through a configurable Last Stand timer that is enabled by de
 
 ## Build outputs
 
-- `bin/Release/PCVR/EnemyLimbDamageManager/EnemyLimbDamageManager.dll`
-- `bin/Release/Nomad/EnemyLimbDamageManager/EnemyLimbDamageManager.dll`
+- `bin/PCVR/EnemyLimbDamageManager/EnemyLimbDamageManager.dll`
+- `bin/Nomad/EnemyLimbDamageManager/EnemyLimbDamageManager.dll`
 

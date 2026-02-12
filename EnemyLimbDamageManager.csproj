@@ -14,7 +14,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Include="**\*.cs" Exclude="References\**;obj\**;bin\**;builds\**;*.Tests\**" />
+    <Compile Include="**\*.cs" Exclude="References\**;obj\**;bin\**;builds\**;*.Tests\**;StandaloneReactionAnimationMod\**" />
   </ItemGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
@@ -23,14 +23,14 @@
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
-    <OutputPath>bin\Release\PCVR\EnemyLimbDamageManager\</OutputPath>
+    <OutputPath>bin\PCVR\EnemyLimbDamageManager\</OutputPath>
     <DebugType>none</DebugType>
     <DebugSymbols>false</DebugSymbols>
     <Optimize>true</Optimize>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Nomad|AnyCPU'">
-    <OutputPath>bin\Release\Nomad\EnemyLimbDamageManager\</OutputPath>
+    <OutputPath>bin\Nomad\EnemyLimbDamageManager\</OutputPath>
     <DebugType>none</DebugType>
     <DebugSymbols>false</DebugSymbols>
     <Optimize>true</Optimize>
@@ -66,10 +66,41 @@
       <HintPath>..\libs\UnityEngine.TextRenderingModule.dll</HintPath>
       <Private>false</Private>
     </Reference>
+    <Reference Include="UnityEngine.AudioModule">
+      <HintPath>..\libs\UnityEngine.AudioModule.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
+    <Reference Include="UnityEngine.PhysicsModule">
+      <HintPath>..\libs\UnityEngine.PhysicsModule.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
+    <Reference Include="UnityEngine.AnimationModule">
+      <HintPath>..\libs\UnityEngine.AnimationModule.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
+    <Reference Include="UnityEngine.JSONSerializeModule">
+      <HintPath>..\libs\UnityEngine.JSONSerializeModule.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
   </ItemGroup>
 
   <ItemGroup>
     <Content Include="manifest.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Configuration\SoundCatalog.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="
+      Sounds\AxeSlice1.wav;
+      Sounds\BoneBreakHeavy1.wav;
+      Sounds\BoneBreakHeavy2.wav;
+      Sounds\BoneBreakHeavy3.wav;
+      Sounds\BoneBreakHeavy4.wav;
+      Sounds\BoneBreakHeavy5.wav;
+      Sounds\Pierce.wav;
+      Sounds\SwordSlice1.wav;
+      Sounds\SwordSlice2.wav">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
   </ItemGroup>

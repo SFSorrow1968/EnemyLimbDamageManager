@@ -1,0 +1,26 @@
+﻿{
+  "bluntLight": [
+    "BoneBreakHeavy1.wav",
+    "BoneBreakHeavy2.wav",
+    "BoneBreakHeavy3.wav",
+    "BoneBreakHeavy4.wav",
+    "BoneBreakHeavy5.wav"
+  ],
+  "bluntHeavy": [
+    "BoneBreakHeavy1.wav",
+    "BoneBreakHeavy2.wav",
+    "BoneBreakHeavy3.wav",
+    "BoneBreakHeavy4.wav",
+    "BoneBreakHeavy5.wav"
+  ],
+  "slashSword": [
+    "SwordSlice1.wav",
+    "SwordSlice2.wav"
+  ],
+  "slashAxe": [
+    "AxeSlice1.wav"
+  ],
+  "pierce": [
+    "Pierce.wav"
+  ]
+}

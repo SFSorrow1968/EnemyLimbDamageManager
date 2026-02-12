@@ -47,7 +47,29 @@ namespace EnemyLimbDamageManager.Tests
             Assert.That(ELDMModOptions.NormalizeDamagePreset("Extreme"), Is.EqualTo(ELDMModOptions.PresetDamageExtreme));
             Assert.That(ELDMModOptions.NormalizeLimbSlowPreset("high"), Is.EqualTo(ELDMModOptions.PresetLimbSlowHigh));
             Assert.That(ELDMModOptions.NormalizeLastStandPreset("off"), Is.EqualTo("OffLegacy"));
+            Assert.That(ELDMModOptions.NormalizeLastStandChancePreset("Always"), Is.EqualTo(ELDMModOptions.PresetLastStandFrequent));
             Assert.That(ELDMModOptions.NormalizeLastStandSlowPreset("heavy"), Is.EqualTo(ELDMModOptions.PresetLastStandSlowHeavy));
+        }
+
+        [Test]
+        public void LegacyPresetAliases_DoNotOverwriteLastStandFrequencyPreset()
+        {
+            string previousLastStand = ELDMModOptions.PresetModel;
+            string previousRecovery = ELDMModOptions.PresetLimbSlowModel;
+            try
+            {
+                ELDMModOptions.PresetModel = "Always";
+                ELDMModOptions.PresetRecoveryModel = "Light";
+                ELDMModOptions.PresetLastStandSlowModel = "Heavy";
+
+                Assert.That(ELDMModOptions.PresetModel, Is.EqualTo("Always"));
+                Assert.That(ELDMModOptions.PresetLimbSlowModel, Is.EqualTo("Heavy"));
+            }
+            finally
+            {
+                ELDMModOptions.PresetModel = previousLastStand;
+                ELDMModOptions.PresetLimbSlowModel = previousRecovery;
+            }
         }
 
         [Test]
