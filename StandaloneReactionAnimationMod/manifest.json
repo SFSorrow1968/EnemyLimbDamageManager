@@ -1,0 +1,7 @@
+{
+  "Name": "Standalone Reaction Animation",
+  "Description": "Standalone death reaction and animation system with data-driven speed control.",
+  "Author": "dkatz",
+  "ModVersion": "0.1.1",
+  "GameVersion": "1.0.0.0"
+}
